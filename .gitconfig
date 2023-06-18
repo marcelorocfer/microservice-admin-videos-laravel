@@ -1,0 +1,7 @@
+[user]
+	email = marceloengecomp@gmail.com
+	name = Marcelo
+[push]
+	default = current
+[credential]
+	helper = "!f() { /var/www/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/node /tmp/vscode-remote-containers-3b43d9c37aa7566a1f9de6111eb35bf7a36b5b3e.js $*; }; f"
