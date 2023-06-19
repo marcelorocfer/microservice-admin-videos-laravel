@@ -2,30 +2,55 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
+use Throwable;
 use Tests\TestCase;
 use App\Models\Category as Model;
-use Illuminate\Foundation\Testing\WithFaker;
+use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\CategoryRepository;
 use Core\Domain\Entity\Category as EntityCategory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 
 class CategoryRepositoryTest extends TestCase
 {
-    public function testInsert()
-    {
-        $repository = new CategoryRepository(new Model());
+    protected $repository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->repository = new CategoryRepository(new Model());
+    }  
+
+    public function testInsert()
+    {   
         $entity = new EntityCategory(
-            name: 'Test'
+            name: 'Teste'
         );
 
-        $response = $repository->insert($entity);
+        $response = $this->repository->insert($entity);
 
-        $this->assertInstanceOf(CategoryRepositoryInterface::class, $repository);
+        $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
         $this->assertInstanceOf(EntityCategory::class, $response);
         $this->assertDatabaseHas('categories', [
             'name' => $entity->name
         ]);
+    }
+
+    public function testFindById()
+    {
+        $category = Model::factory()->create();
+        $response = $this->repository->findById($category->id);
+
+        $this->assertInstanceOf(EntityCategory::class, $response);
+        $this->assertEquals($category->id, $response->id());
+    }
+
+    public function testFindByIdNotFound()
+    {
+        try {
+            $this->repository->findById('fakeValue');
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertInstanceOf(NotFoundException::class, $th);
+        }
     }
 }
