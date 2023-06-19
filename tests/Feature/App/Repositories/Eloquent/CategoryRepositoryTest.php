@@ -53,4 +53,11 @@ class CategoryRepositoryTest extends TestCase
             $this->assertInstanceOf(NotFoundException::class, $th);
         }
     }
+
+    public function testFindAll()
+    {
+        $categories = Model::factory()->count(50)->create();
+        $response = $this->repository->findAll();
+        $this->assertEquals(count($response), count($categories));
+    }
 }
