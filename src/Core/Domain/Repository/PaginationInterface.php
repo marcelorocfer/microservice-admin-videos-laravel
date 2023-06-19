@@ -2,8 +2,6 @@
 
 namespace Core\Domain\Repository;
 
-use Core\Domain\Entity\Category;
-
 interface PaginationInterface
 {
     /**
