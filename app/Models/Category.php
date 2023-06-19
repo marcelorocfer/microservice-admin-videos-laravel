@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public $incrementing = false;
 
@@ -21,5 +22,6 @@ class Category extends Model
     protected $casts = [
         'id' => 'string',
         'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 }
