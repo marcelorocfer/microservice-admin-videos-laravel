@@ -4,4 +4,4 @@
 [push]
 	default = current
 [credential]
-	helper = "!f() { /var/www/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/node /tmp/vscode-remote-containers-3b43d9c37aa7566a1f9de6111eb35bf7a36b5b3e.js $*; }; f"
+	helper = "!f() { /var/www/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/node /tmp/vscode-remote-containers-fca905b62a5863b009a5b649d9740eaff84230d9.js $*; }; f"

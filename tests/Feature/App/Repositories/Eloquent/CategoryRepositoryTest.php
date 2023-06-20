@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Repositories\Eloquent;
 use Throwable;
 use Tests\TestCase;
 use App\Models\Category as Model;
+use App\Models\Category;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\CategoryRepository;
 use Core\Domain\Entity\Category as EntityCategory;
@@ -78,5 +79,33 @@ class CategoryRepositoryTest extends TestCase
 
         $this->assertInstanceOf(PaginationInterface::class, $response);
         $this->assertCount(0, $response->items());
+    }
+
+    public function testUpdateIdNotFound()
+    {
+        try {
+            $category = new EntityCategory(name: 'test');
+            $this->repository->update($category);
+
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertInstanceOf(NotFoundException::class, $th);
+        }
+    }
+
+    public function testUpdate()
+    {
+        $categoryFactory = Category::factory()->create();
+
+        $category = new EntityCategory(
+            id: $categoryFactory->id,
+            name: 'updated name'
+        );
+
+        $response = $this->repository->update($category);
+
+        $this->assertInstanceOf(EntityCategory::class, $response);
+        $this->assertNotEquals($response->name, $categoryFactory->name);
+        $this->assertEquals('updated name', $response->name);
     }
 }
