@@ -36,5 +36,7 @@ class CategoryControllerUnitTest extends TestCase
         $mockUseCaseSpy->shouldReceive('execute')->andReturn($mockOutputDTO);
         $response = $controller->index($mockRequest, $mockUseCaseSpy);
         $mockUseCaseSpy->shouldHaveReceived('execute');
+
+        Mockery::close();
     }
 }
