@@ -17,6 +17,7 @@ use Illuminate\Http\{
 use Core\UseCase\Category\{
     ListCategoriesUseCase,
     CreateCategoryUseCase,
+    ListCategoryUseCase,
 };
 
 class CategoryControllerTest extends TestCase
@@ -54,5 +55,17 @@ class CategoryControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_CREATED, $response->status());
+    }
+
+    public function test_show()
+    {
+        $category = Category::factory()->create();
+
+        $response = $this->controller->show(
+            useCase: new ListCategoryUseCase($this->repository),
+            id: $category->id,
+        );
+        
+        $this->assertEquals(Response::HTTP_OK, $response->status());
     }
 }
