@@ -51,7 +51,23 @@ class CategoryApiTest extends TestCase
     public function test_list_category_notfound()
     {
         $response = $this->getJson("$this->endpoint/fake_value");
-
         $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_list_category()
+    {
+        $category = Category::factory()->create();
+        $response = $this->getJson("$this->endpoint/{$category->id}");
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'description',
+                'is_active',
+                'created_at'
+            ]
+        ]);
+        $this->assertEquals($category->id, $response['data']['id']);
     }
 }
