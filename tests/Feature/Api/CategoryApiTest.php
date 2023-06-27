@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 use App\Models\Category;
+use Illuminate\Http\Response;
 
 class CategoryApiTest extends TestCase
 {
@@ -45,5 +46,12 @@ class CategoryApiTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals(2, $response['meta']['current_page']);
         $this->assertEquals(30, $response['meta']['total']);
+    }
+
+    public function test_list_category_notfound()
+    {
+        $response = $this->getJson("$this->endpoint/fake_value");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 }
