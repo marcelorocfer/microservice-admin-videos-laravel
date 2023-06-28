@@ -44,7 +44,7 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $register->id = 'id';
         $register->name = 'name';
         $register->description = 'description';
-        $register->isActive = 'isActive';
+        $register->is_active = 'is_active';
         $register->created_at = 'created_at';
         $register->updated_at = 'updated_at';
         $register->deleted_at = 'deleted_at';

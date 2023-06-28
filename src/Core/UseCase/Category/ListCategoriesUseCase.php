@@ -41,8 +41,8 @@ class ListCategoriesUseCase
                     'id' => $data->id,
                     'name' => $data->name,
                     'description' => $data->description,
-                    'isActive' => (bool) $data->isActive,
-                    'createdAt' => (string) $data->createdAt,
+                    'is_active' => (bool) $data->is_active,
+                    'created_at' => (string) $data->created_at,
                 ];
             }, $categories->items()),
             total: $categories->total(),

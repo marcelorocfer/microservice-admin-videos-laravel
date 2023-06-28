@@ -57,7 +57,7 @@ class CategoryController extends Controller
             input: new CategoryCreateInputDTO(
                 name: $request->name,
                 description: $request->description ?? '',
-                isActive: (bool) $request->is_active ?? true,
+                is_active: (bool) $request->is_active ?? true,
             )
         );
 

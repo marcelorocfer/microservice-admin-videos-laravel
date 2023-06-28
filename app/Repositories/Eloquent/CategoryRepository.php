@@ -24,8 +24,8 @@ class CategoryRepository implements CategoryRepositoryInterface
             'id' => $category->id(),
             'name' => $category->name,
             'description' => $category->description,
-            'is_active' => $category->isActive,
-            'created_at' => $category->createdAt(),
+            'is_active' => $category->is_active,
+            'created_at' => $category->created_at(),
         ]);
 
         return $this->toCategory($category);
@@ -73,7 +73,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $categoryDB->update([
             'name' => $category->name,
             'description' => $category->description,
-            'is_active' => $category->isActive,
+            'is_active' => $category->is_active,
         ]);
 
         $categoryDB->refresh();

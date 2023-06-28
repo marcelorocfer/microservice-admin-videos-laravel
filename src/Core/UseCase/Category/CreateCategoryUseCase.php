@@ -19,7 +19,7 @@ class CreateCategoryUseCase
         $category = new Category(
             name: $input->name,
             description: $input->description,
-            isActive: $input->isActive,
+            is_active: $input->is_active,
         );
 
         $newCategory = $this->repository->insert($category);
@@ -28,8 +28,8 @@ class CreateCategoryUseCase
             id: $newCategory->id(),
             name: $newCategory->name,
             description: $newCategory->description,
-            isActive: $newCategory->isActive,
-            createdAt: $newCategory->createdAt(),
+            is_active: $newCategory->is_active,
+            created_at: $newCategory->created_at(),
         );
     }
 }

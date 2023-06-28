@@ -15,26 +15,26 @@ class CategoryUnitTest extends TestCase
         $category = new Category(
             name: 'New Category',
             description: 'New Description',
-            isActive: true,
+            is_active: true,
         );
 
         $this->assertNotEmpty($category->id());
-        $this->assertNotEmpty($category->createdAt());
+        $this->assertNotEmpty($category->created_at());
         $this->assertEquals('New Category', $category->name);
         $this->assertEquals('New Description', $category->description);
-        $this->assertEquals(true, $category->isActive);
+        $this->assertEquals(true, $category->is_active);
     }
 
     public function testIsActivated()
     {
         $category = new Category(
             name: 'New Category',
-            isActive: false,
+            is_active: false,
         );
 
-        $this->assertFalse($category->isActive);
+        $this->assertFalse($category->is_active);
         $category->activate();
-        $this->assertTrue($category->isActive);
+        $this->assertTrue($category->is_active);
     }
 
     public function testIsDeactivated()
@@ -43,9 +43,9 @@ class CategoryUnitTest extends TestCase
             name: 'New Category',
         );
 
-        $this->assertTrue($category->isActive);
+        $this->assertTrue($category->is_active);
         $category->disable();
-        $this->assertFalse($category->isActive);
+        $this->assertFalse($category->is_active);
     }   
     
     public function testUpdate()
@@ -56,8 +56,8 @@ class CategoryUnitTest extends TestCase
             id: $uuid,
             name: 'Category',
             description: 'Description',
-            isActive: true,
-            createdAt: '2023-06-14 10:00:00',
+            is_active: true,
+            created_at: '2023-06-14 10:00:00',
         );
 
         $category->update(

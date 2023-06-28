@@ -15,23 +15,23 @@ class Category
         protected Uuid | string $id = '',
         protected string $name = '',
         protected string $description = '',
-        protected bool $isActive = true,
-        protected DateTime | string $createdAt = '',
+        protected bool $is_active = true,
+        protected DateTime | string $created_at = '',
     ){
         $this->id = $this->id ? new Uuid($this->id) : Uuid::random();
-        $this->createdAt = $this->createdAt ? new DateTime($this->createdAt) : new DateTime();
+        $this->created_at = $this->created_at ? new DateTime($this->created_at) : new DateTime();
 
         $this->validate();
     }
 
     public function activate(): void
     {   
-        $this->isActive = true;
+        $this->is_active = true;
     }
 
     public function disable(): void
     {   
-        $this->isActive = false;
+        $this->is_active = false;
     }
 
     public function update(string $name, string $description = '')
