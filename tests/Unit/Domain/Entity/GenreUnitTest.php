@@ -7,6 +7,7 @@ use Core\Domain\Entity\Genre;
 use PHPUnit\Framework\TestCase;
 use Core\Domain\ValueObject\Uuid;
 use Ramsey\Uuid\Uuid as RamseyUuid;
+use Core\Domain\Exceptions\EntityValidationException;
 
 class GenreUnitTest extends TestCase
 {
@@ -80,5 +81,33 @@ class GenreUnitTest extends TestCase
         );
 
         $this->assertEquals('Name updated', $genre->name);
+    }
+
+    public function testEntityException()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        new Genre(
+            name: 's',
+        );
+    }
+
+    public function testEntityUpdateException()
+    {
+        $this->expectException(EntityValidationException::class);
+        
+        $uuid = (string) RamseyUuid::uuid4();
+        $date = date('Y-m-d H:i:s');
+
+        $genre = new Genre(
+            id: new Uuid($uuid),
+            name: 'New Genre',
+            is_active: false,
+            created_at: new DateTime($date),
+        );
+
+        $genre->update(
+            name: 's',
+        );
     }
 }
