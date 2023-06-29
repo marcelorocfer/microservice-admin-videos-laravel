@@ -9,12 +9,13 @@ use Core\Domain\Entity\Traits\MagicalMethodsTrait;
 
 class Genre 
 {
-    use MagicalMethodsTrait;
+    use MagicalMethodsTrait;    
 
     public function __construct(
         protected string $name,
         protected ?Uuid $id = null,
         protected $is_active = true,
+        protected array $categoriesId = [],
         protected ?DateTime $created_at = null,
     ) {
         $this->id = $this->id ?? Uuid::random();
@@ -38,6 +39,11 @@ class Genre
         $this->name = $name;
 
         $this->validate();
+    }
+
+    public function addCategory(string $categoryId)
+    {
+        array_push($this->categoriesId, $categoryId);
     }
 
     private function validate()
