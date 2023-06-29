@@ -46,6 +46,11 @@ class Genre
         array_push($this->categoriesId, $categoryId);
     }
 
+    public function removeCategory(string $categoryId)
+    {
+        unset($this->categoriesId[array_search($categoryId, $this->categoriesId)]);
+    }
+
     private function validate()
     {
         DomainValidation::strMaxLength($this->name);
