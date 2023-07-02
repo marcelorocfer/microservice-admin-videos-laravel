@@ -9,9 +9,12 @@ use PHPUnit\Framework\TestCase;
 use Core\UseCase\Genre\CreateGenreUseCase;
 use Core\Domain\Entity\Genre as EntityGenre;
 use Core\UseCase\Interfaces\TransactionInterface;
-use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\DTO\Genre\Create\GenreCreateInputDTO;
+use Core\UseCase\DTO\Genre\Create\{GenreCreateInputDTO};
+use Core\Domain\Repository\{
+    CategoryRepositoryInterface, 
+    GenreRepositoryInterface
+};
 
 class CreateGenreUseCaseUnitTest extends TestCase
 {
@@ -29,12 +32,16 @@ class CreateGenreUseCaseUnitTest extends TestCase
 
         $mockTransaction = Mockery::mock(stdClass::class, TransactionInterface::class);
 
+        $mockCategoryRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
+
         $mockCreateInputDTO = Mockery::mock(GenreCreateInputDTO::class, [
             'name', [$uuid], true
         ]);
         
-        $useCase = new CreateGenreUseCase($mockRepository, $mockTransaction);
-        $useCase->execute($mockCreateInputDTO);
+        $useCase = new CreateGenreUseCase($mockRepository, $mockTransaction, $mockCategoryRepository);
+        $response = $useCase->execute($mockCreateInputDTO);
+
+        $this->assertInstanceOf(GenreCreateOutputDTO::class, $response);
 
         Mockery::close();
     }
