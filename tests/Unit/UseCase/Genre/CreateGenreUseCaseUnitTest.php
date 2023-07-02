@@ -10,7 +10,10 @@ use Core\UseCase\Genre\CreateGenreUseCase;
 use Core\Domain\Entity\Genre as EntityGenre;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\DTO\Genre\Create\{GenreCreateInputDTO};
+use Core\UseCase\DTO\Genre\Create\{
+    GenreCreateInputDTO, 
+    GenreCreateOutputDTO
+};
 use Core\Domain\Repository\{
     CategoryRepositoryInterface, 
     GenreRepositoryInterface
@@ -31,8 +34,11 @@ class CreateGenreUseCaseUnitTest extends TestCase
         $mockRepository->shouldReceive('insert')->andReturn($mockEntity);
 
         $mockTransaction = Mockery::mock(stdClass::class, TransactionInterface::class);
+        $mockTransaction->shouldReceive('commit');
+        $mockTransaction->shouldReceive('rollback');
 
         $mockCategoryRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
+        $mockCategoryRepository->shouldReceive('getIdsListIds')->andReturn([$uuid]);
 
         $mockCreateInputDTO = Mockery::mock(GenreCreateInputDTO::class, [
             'name', [$uuid], true
