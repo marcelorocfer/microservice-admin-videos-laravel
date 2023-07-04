@@ -27,7 +27,7 @@ class UpdateGenreUseCaseUnitTest extends TestCase
         $uuid = (string) Uuid::uuid4();
         
         $useCase = new UpdateGenreUseCase($this->mockRepository($uuid), $this->mockTransaction(), $this->mockCategoryRepository($uuid));
-        $response = $useCase->execute($this->mockUpdateInputDTO([$uuid]));
+        $response = $useCase->execute($this->mockUpdateInputDTO($uuid, [$uuid]));
 
         $this->assertInstanceOf(GenreUpdateOutputDTO::class, $response);
     }
@@ -39,7 +39,7 @@ class UpdateGenreUseCaseUnitTest extends TestCase
         $uuid = (string) Uuid::uuid4();
         
         $useCase = new UpdateGenreUseCase($this->mockRepository($uuid), $this->mockTransaction(), $this->mockCategoryRepository($uuid));
-        $useCase->execute($this->mockUpdateInputDTO([$uuid, 'fake_value']));
+        $useCase->execute($this->mockUpdateInputDTO($uuid, [$uuid, 'fake_value']));
     }
 
     private function mockEntity(string $uuid) 
@@ -48,14 +48,19 @@ class UpdateGenreUseCaseUnitTest extends TestCase
             'test', new ValueObjectUuid($uuid), true, []
         ]);
         $mockEntity->shouldReceive('created_at')->andReturn(date('Y-m-d H:i:s'));
+        $mockEntity->shouldReceive('update');
+        $mockEntity->shouldReceive('addCategory');
 
         return $mockEntity;
     }
 
     private function mockRepository(string $uuid)
     {
+        $mockEntity = $this->mockEntity($uuid);
+
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
-        $mockRepository->shouldReceive('insert')->andReturn($this->mockEntity($uuid));
+        $mockRepository->shouldReceive('findById')->andReturn($mockEntity);
+        $mockRepository->shouldReceive('update')->andReturn($mockEntity);
 
         return $mockRepository;
     }
@@ -77,10 +82,10 @@ class UpdateGenreUseCaseUnitTest extends TestCase
         return $mockCategoryRepository;
     }
 
-    private function mockUpdateInputDTO(array $categoriesIds)
+    private function mockUpdateInputDTO(string $uuid, array $categoriesIds = [])
     {
         return Mockery::mock(GenreUpdateInputDTO::class, [
-            'name', $categoriesIds, true
+            $uuid, 'name to update', $categoriesIds
         ]);
     }
 }
