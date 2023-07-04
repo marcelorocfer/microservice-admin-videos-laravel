@@ -6,11 +6,9 @@ use Mockery;
 use stdClass;
 use Ramsey\Uuid\Uuid;
 use PHPUnit\Framework\TestCase;
-use Core\UseCase\Genre\DeleteGenreUseCase;
-use Core\Domain\Entity\Genre as EntityGenre;
-use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\DTO\Genre\GenreInputDTO;
+use Core\UseCase\Genre\DeleteGenreUseCase;
+use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\UseCase\DTO\Genre\Delete\DeleteGenreOutputDTO;
 
 class DeleteGenreUseCaseUnitTest extends TestCase
@@ -20,22 +18,36 @@ class DeleteGenreUseCaseUnitTest extends TestCase
         $uuid = (string) Uuid::uuid4();
 
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
-        $mockRepository->shouldReceive('findById')->andReturn($this->mockEntity($uuid));
+        $mockRepository->shouldReceive('delete')->andReturn(true);
+
+        $mockInputDTO = Mockery::mock(GenreInputDTO::class, [$uuid]);
         
         $useCase = new DeleteGenreUseCase($mockRepository);
+        $response = $useCase->execute($mockInputDTO);
 
-        Mockery::close();
+        $this->assertInstanceOf(DeleteGenreOutputDTO::class, $response);
+        $this->assertTrue($response->success);
     }
 
-    private function mockEntity(string $uuid) 
+    public function test_delete_fail()
     {
-        $mockEntity = Mockery::mock(EntityGenre::class, [
-            'test', new ValueObjectUuid($uuid), true, []
-        ]);
-        $mockEntity->shouldReceive('created_at')->andReturn(date('Y-m-d H:i:s'));
-        $mockEntity->shouldReceive('update');
-        $mockEntity->shouldReceive('addCategory');
+        $uuid = (string) Uuid::uuid4();
 
-        return $mockEntity;
+        $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
+        $mockRepository->shouldReceive('delete')->andReturn(false);
+
+        $mockInputDTO = Mockery::mock(GenreInputDTO::class, [$uuid]);
+        
+        $useCase = new DeleteGenreUseCase($mockRepository);
+        $response = $useCase->execute($mockInputDTO);
+
+        $this->assertFalse($response->success);
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+
+        parent::tearDown();
     }
 }
