@@ -12,13 +12,14 @@ use Core\UseCase\DTO\Genre\ListGenres\{
     ListGenresInputDTO,
     ListGenresOutputDTO
 };
+use Core\UseCase\Genre\ListGenreUseCase;
 
 class ListGenresUseCaseUnitTest extends TestCase
 {
     public function test_usecase()
     {
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
-        $mockRepository->shouldReceive('paginate')->andReturn($this->mockPagination());
+        $mockRepository->shouldReceive('paginate')->once()->andReturn($this->mockPagination());
 
         $mockInputDTO = Mockery::mock(ListGenresInputDTO::class, [
             'test', 'desc', 1, 15
@@ -30,6 +31,22 @@ class ListGenresUseCaseUnitTest extends TestCase
         $this->assertInstanceOf(ListGenresOutputDTO::class, $response);
 
         Mockery::close();
+
+        /**
+         * Spies
+         */
+        // arrange
+        $spy = Mockery::spy(stdClass::class, GenreRepositoryInterface::class);
+        $spy->shouldReceive('paginate')->andReturn($this->mockPagination());
+        $spyUseCase = new ListGenresUseCase($spy);
+
+        // action
+        $spyUseCase->execute($mockInputDTO);
+
+        // action
+        $spy->shouldHaveReceived()->paginate(
+            'test', 'desc', 1, 15
+        );
     }
 
     protected function mockPagination(array $items = [])
