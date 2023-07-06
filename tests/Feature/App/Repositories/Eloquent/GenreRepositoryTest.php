@@ -86,4 +86,36 @@ class GenreRepositoryTest extends TestCase
         $this->assertEquals($genre->id, $response->id());
         $this->assertEquals($genre->name, $response->name);
     }
+
+    public function testFindAll()
+    {
+        $genres = Model::factory()->count(10)->create();
+
+        $genresDB = $this->repository->findAll();
+
+        $this->assertEquals(count($genres), count($genresDB));
+    }
+
+    public function testFindAllEmpty()
+    {
+        $genresDB = $this->repository->findAll();
+
+        $this->assertCount(0, $genresDB);
+    }
+
+    public function testFindAllWithFilter()
+    {
+        Model::factory()->count(10)->create([
+            'name' => 'Test'
+        ]);
+        Model::factory()->count(10)->create();
+
+        $genresDB = $this->repository->findAll(
+            filter: 'Test'
+        );
+        $this->assertEquals(10, count($genresDB));
+
+        $genresDB = $this->repository->findAll();
+        $this->assertEquals(20, count($genresDB));
+    }
 }
