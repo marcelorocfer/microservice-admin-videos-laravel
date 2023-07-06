@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\Genre as Model;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Genre as Entity;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
 
@@ -36,7 +37,11 @@ class GenreRepository implements GenreRepositoryInterface
     
     public function findById(string $id): Entity
     {
+        if (!$genreDB = $this->model->find($id)) {
+            throw new NotFoundException("Genre {$id} not found!");
+        }
 
+        return $this->toGenre($genreDB);
     }
     
     public function findAll(string $filter = '', $order = 'DESC'): array
@@ -59,7 +64,7 @@ class GenreRepository implements GenreRepositoryInterface
 
     }    
 
-    private function toGenre(object $object): Entity
+    private function toGenre(Model $object): Entity
     {
         $entity = new Entity(
             id: new Uuid($object->id),
