@@ -8,6 +8,7 @@ use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Genre as Entity;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
+use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\GenreRepositoryInterface;
 
 class GenreRepository implements GenreRepositoryInterface
@@ -51,14 +52,25 @@ class GenreRepository implements GenreRepositoryInterface
                                     if ($filter) {
                                         $query->where('name', 'LIKE', "%{$filter}%");
                                     }
-                                })->get();
+                                })
+                                ->orderBy('name', $order)
+                                ->get();
 
         return $result->toArray();
     }
     
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
+        $result = $this->model
+                                ->where(function ($query) use ($filter) {
+                                    if ($filter) {
+                                        $query->where('name', 'LIKE', "%{$filter}%");
+                                    }
+                                })
+                                ->orderBy('name', $order)
+                                ->paginate($totalPage);
 
+        return new PaginationPresenter($result);
     }
     
     public function update(Entity $genre): Entity
