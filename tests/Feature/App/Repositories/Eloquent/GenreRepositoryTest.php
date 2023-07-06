@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\Repositories\Eloquent;
 
 use Tests\TestCase;
+use App\Models\Category;
 use App\Models\Genre as Model;
 use Core\Domain\Entity\Genre as Entity;
 use App\Repositories\Eloquent\GenreRepository;
@@ -46,5 +47,23 @@ class GenreRepositoryTest extends TestCase
             'id' => $entity->id(),
             'is_active' => false
         ]);
+    }
+
+    public function testInsertWithRelationships()
+    {
+        $categories = Category::factory()->count(4)->create();
+        $genre = new Entity(name: 'New genre');
+
+        foreach ($categories as $category) {
+            $genre->addCategory($category->id);
+        }
+
+        $response = $this->repository->insert($genre);
+
+        $this->assertDatabaseHas('genres', [
+            'id' => $response->id(),
+        ]);
+
+        $this->assertDatabaseCount('category_genre', 4);
     }
 }
