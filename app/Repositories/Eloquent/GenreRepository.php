@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Eloquent;
 
+use DateTime;
 use App\Models\Genre as Model;
+use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Genre as Entity;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
@@ -18,7 +20,14 @@ class GenreRepository implements GenreRepositoryInterface
 
     public function insert(Entity $genre): Entity
     {
+        $register = $this->model->create([
+            'id' => $genre->id(),
+            'name' => $genre->name,
+            'is_active' => $genre->is_active,
+            'created_at' => $genre->created_at(),
+        ]);
 
+        return $this->toGenre($register);
     }
     
     public function findById(string $id): Entity
@@ -44,6 +53,17 @@ class GenreRepository implements GenreRepositoryInterface
     public function delete(string $id): bool
     {
 
+    }    
+
+    private function toGenre(object $object): Entity
+    {
+        $entity = new Entity(
+            id: new Uuid($object->id),
+            name: $object->name,
+            created_at: new DateTime($object->created_at),
+        );
+        ((bool) $object->is_active) ? $entity->activate() : $entity->deactivate();
+
+        return $entity;
     }
-    
 }

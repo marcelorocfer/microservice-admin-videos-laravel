@@ -4,6 +4,8 @@ namespace Tests\Feature\App\Repositories\Eloquent;
 
 use Tests\TestCase;
 use App\Models\Genre as Model;
+use Core\Domain\Entity\Genre as Entity;
+use App\Repositories\Eloquent\GenreRepository;
 
 class GenreRepositoryTest extends TestCase
 {
@@ -15,4 +17,12 @@ class GenreRepositoryTest extends TestCase
         $this->repository = new GenreRepository(new Model());
     }  
     
+    public function testInsert()
+    {
+        $entity = new Entity(name: 'New genre');
+
+        $response = $this->repository->insert($entity);
+
+        dump($response);
+    }
 }
