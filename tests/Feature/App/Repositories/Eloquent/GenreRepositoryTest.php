@@ -11,6 +11,7 @@ use Core\Domain\Entity\Genre as Entity;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\GenreRepository;
 use Core\Domain\Repository\GenreRepositoryInterface;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class GenreRepositoryTest extends TestCase
 {
@@ -160,5 +161,25 @@ class GenreRepositoryTest extends TestCase
         $this->assertDatabaseHas('genres', [
             'name' => 'Name updated'
         ]);
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $genreId = (string) RamseyUuid::uuid4();
+
+        $entity = new Entity(
+            id: new Uuid($genreId),
+            name: 'name',
+            is_active: true,
+            created_at: new DateTime(date('Y-m-d H:i:s'))
+        );
+
+        $entity->update(
+            name: 'Name updated',
+        );
+
+        $this->repository->update($entity);
     }
 }
