@@ -66,4 +66,38 @@ class CreateGenreUseCaseTest extends TestCase
             )
         );
     }
+
+    public function testTransactionsInsert()
+    {
+        $repository = new GenreRepository(new GenreModel());
+        $repositoryCategory = new CategoryRepository(new CategoryModel());
+
+        $useCase = new CreateGenreUseCase(
+            $repository,
+            new DBTransaction(),
+            $repositoryCategory
+        );
+
+        $categories = CategoryModel::factory()->count(10)->create();
+        $categoriesIds = $categories->pluck('id')->toArray();
+
+        try {
+            $useCase->execute(
+                new GenreCreateInputDTO(
+                    name: 'test',
+                    categoriesId: $categoriesIds
+                )
+            );
+
+            $this->assertDatabaseHas('genres', [
+                'name' => 'test'
+            ]); 
+    
+            $this->assertDatabaseCount('category_genre', 10);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->assertDatabaseCount('genres', 0);
+            $this->assertDatabaseCount('category_genre', 0);
+        }
+    }
 }
