@@ -83,6 +83,10 @@ class GenreRepository implements GenreRepositoryInterface
             'name' => $genre->name
         ]);
 
+        if (count($genre->categoriesId) > 0) {
+            $genreDB->categories()->sync($genre->categoriesId);
+        }
+
         $genreDB->refresh();
 
         return $this->toGenre($genreDB);
