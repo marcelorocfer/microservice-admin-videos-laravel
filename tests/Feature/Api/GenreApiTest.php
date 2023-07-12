@@ -11,7 +11,7 @@ class GenreApiTest extends TestCase
 {
     protected $endpoint = '/api/genres';
 
-    public function test_list_all_empty()
+    public function test_index_empty()
     {
         $response = $this->getJson($this->endpoint);
 
@@ -19,7 +19,7 @@ class GenreApiTest extends TestCase
         $response->assertJsonCount(0, 'data');
     }
 
-    public function test_list_all()
+    public function test_index()
     {
         Model::factory()->count(20)->create();
 
@@ -76,6 +76,29 @@ class GenreApiTest extends TestCase
         $response->assertJsonStructure([
             'message',
             'errors' => ['name']
+        ]);
+    }
+
+    public function test_show_not_found()
+    {
+        $response = $this->getJson("{$this->endpoint}/fake_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_show()
+    {
+        $genre = Model::factory()->create();
+
+        $response = $this->getJson("{$this->endpoint}/{$genre->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'is_active'
+            ]
         ]);
     }
 }
