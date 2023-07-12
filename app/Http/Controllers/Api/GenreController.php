@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGenre;
 use App\Http\Resources\GenreResource;
-use Core\UseCase\Genre\ListGenresUseCase;
+use App\Http\Controllers\Controller;
+use Core\UseCase\DTO\Genre\Create\GenreCreateInputDTO;
 use Core\UseCase\DTO\Genre\ListGenres\ListGenresInputDTO;
+use Core\UseCase\Genre\{ListGenresUseCase, CreateGenreUseCase};
+use Illuminate\Http\Response;
 
 class GenreController extends Controller
 {
@@ -43,12 +46,22 @@ class GenreController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreGenre  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGenre $request, CreateGenreUseCase $useCase)
     {
-        //
+        $response = $useCase->execute(
+            input: new GenreCreateInputDTO(
+                name: $request->name,
+                is_active: (bool) $request->is_active,
+                categoriesId: $request->categories_ids
+            )
+        );
+
+        return (new GenreResource($response))
+                    ->response()
+                    ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
