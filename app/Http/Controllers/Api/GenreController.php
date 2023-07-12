@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Requests\StoreGenre;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GenreResource;
 use Core\UseCase\DTO\Genre\GenreInputDTO;
+use App\Http\Requests\{StoreGenre, UpdateGenre};
 use Core\UseCase\DTO\Genre\Create\GenreCreateInputDTO;
 use Core\UseCase\DTO\Genre\ListGenres\ListGenresInputDTO;
-use Core\UseCase\Genre\{ListGenresUseCase, CreateGenreUseCase, ListGenreUseCase};
+use Core\UseCase\DTO\Genre\Update\GenreUpdateInputDTO;
+use Core\UseCase\Genre\{
+    ListGenresUseCase, 
+    CreateGenreUseCase, 
+    ListGenreUseCase, 
+    UpdateGenreUseCase,
+};
 
 class GenreController extends Controller
 {
@@ -89,9 +95,17 @@ class GenreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGenre $request, UpdateGenreUseCase $useCase, $id)
     {
-        //
+        $response = $useCase->execute(
+            input: new GenreUpdateInputDTO(
+                id: $id,
+                name: $request->name,
+                categoriesId: $request->categories_ids
+            )
+        );
+
+        return new GenreResource($response);
     }
 
     /**
