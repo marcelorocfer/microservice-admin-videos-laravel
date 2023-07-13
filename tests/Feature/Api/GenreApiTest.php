@@ -133,4 +133,36 @@ class GenreApiTest extends TestCase
             ]
         ]);
     }
+
+    public function test_validations_update()
+    {
+        $response = $this->putJson("{$this->endpoint}/fake_value", [
+            'name' => 'New name to update',
+            'categories_ids' => []
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonStructure([
+            'message',
+            'errors' => [
+                'categories_ids'
+            ]
+        ]);
+    }
+
+    public function test_delete_not_found()
+    {
+        $response = $this->deleteJson("{$this->endpoint}/fake_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_delete()
+    {
+        $genre = Model::factory()->create();
+
+        $response = $this->deleteJson("{$this->endpoint}/{$genre->id}");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+    }
 }
