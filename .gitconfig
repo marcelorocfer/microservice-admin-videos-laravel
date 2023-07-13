@@ -4,4 +4,4 @@
 [push]
 	default = current
 [credential]
-	helper = "!f() { /var/www/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/node /tmp/vscode-remote-containers-9f2ac400-313f-4e0d-8907-31d99920156f.js git-credential-helper $*; }; f"
+	helper = "!f() { /var/www/.vscode-server/bin/74f6148eb9ea00507ec113ec51c489d6ffb4b771/node /tmp/vscode-remote-containers-7e786e46-35d9-4d5d-abad-5a1b193fbf62.js git-credential-helper $*; }; f"
