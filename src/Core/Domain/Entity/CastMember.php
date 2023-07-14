@@ -5,13 +5,16 @@ namespace Core\Domain\Entity;
 use DateTime;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Enum\CastMemberType;
+use Core\Domain\Entity\Traits\MagicalMethodsTrait;
 
 class CastMember
 {
+    use MagicalMethodsTrait;
+
     public function __construct(
-        protected ?Uuid $id = null,
         protected string $name,
         protected CastMemberType $type,
+        protected ?Uuid $id = null,
         protected ?DateTime $created_at = null,
 
     ){
