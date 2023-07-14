@@ -5,8 +5,8 @@ namespace Core\UseCase\DTO\CastMember\Create;
 class CastMemberCreateInputDTO
 {
     public function __construct(
-        protected string $name,
-        protected int $type,
+        public string $name,
+        public int $type,
     )
     {}
 }
