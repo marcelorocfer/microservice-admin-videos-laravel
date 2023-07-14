@@ -7,6 +7,10 @@ use stdClass;
 use PHPUnit\Framework\TestCase;
 use Core\UseCase\CastMember\CreateCastMemberUseCase;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\DTO\CastMember\Create\{
+    CastMemberCreateInputDTO,
+    CastMemberCreateOutputDTO,
+};
 
 class CreateCastMemberUseCaseUnitTest extends TestCase
 {
@@ -16,11 +20,15 @@ class CreateCastMemberUseCaseUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $useCase = new CreateCastMemberUseCase($mockRepository);
 
+        $mockDTO = Mockery::mock(CastMemberCreateInputDTO::class, [
+            'name', 1
+        ]);
+
         // action
-        $useCase->execute();
+        $response = $useCase->execute($mockDTO);
 
         // assert
-        $this->assertTrue(true);
+        $this->assertInstanceOf(CastMemberCreateOutputDTO::class, $response);
 
         Mockery::close();
     }
