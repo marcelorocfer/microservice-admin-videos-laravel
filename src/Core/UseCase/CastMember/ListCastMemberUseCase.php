@@ -2,6 +2,10 @@
 
 namespace Core\UseCase\CastMember;
 
+use Core\UseCase\DTO\CastMember\{
+    CastMemberInputDTO,
+    CastMemberOutputDTO
+};
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 
 class ListCastMemberUseCase
@@ -13,8 +17,15 @@ class ListCastMemberUseCase
         $this->repository = $repository;
     }
 
-    public function execute()
+    public function execute(CastMemberInputDTO $input): CastMemberOutputDTO
     {
+        $castMember = $this->repository->findById($input->id);
 
+        return new CastMemberOutputDTO(
+            id: $castMember->id(),
+            name: $castMember->name,
+            type: $castMember->type->value,
+            created_at: $castMember->created_at(),
+        );
     }
 }
