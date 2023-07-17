@@ -5,9 +5,13 @@ namespace Tests\Unit\UseCase\CastMember;
 use Mockery;
 use stdClass;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\UseCase\UseCaseTrait;
 use Core\UseCase\CastMember\ListCastMembersUseCase;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Tests\Unit\UseCase\UseCaseTrait;
+use Core\UseCase\DTO\CastMember\List\{
+    ListCastMembersInputDTO,
+    ListCastMembersOutputDTO,
+};
 
 class ListCastMembersUseCaseUnitTest extends TestCase
 {
@@ -21,7 +25,14 @@ class ListCastMembersUseCaseUnitTest extends TestCase
                             ->andReturn($this->mockPagination());
 
         $useCase = new ListCastMembersUseCase($mockRepository);
-        $useCase->execute();
+
+        $mockInputDTO = Mockery::mock(ListCastMembersInputDTO::class, [
+            'filter', 'desc', 1, 15
+        ]);
+
+        $response = $useCase->execute($mockInputDTO);
+
+        $this->assertInstanceOf(ListCastMembersOutputDTO::class, $response);
 
         Mockery::close();
     }
