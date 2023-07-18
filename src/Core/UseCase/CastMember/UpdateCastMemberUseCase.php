@@ -8,7 +8,7 @@ use Core\UseCase\DTO\CastMember\Update\{
     CastMemberUpdateOutputDTO
 };
 
-class UpdateCastMembersUseCase
+class UpdateCastMemberUseCase
 {
     protected $repository;
 
