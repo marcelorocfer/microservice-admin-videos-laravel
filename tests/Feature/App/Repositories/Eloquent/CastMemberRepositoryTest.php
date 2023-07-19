@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\CastMember as Model;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Entity\CastMember as Entity;
+use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\CastMemberRepository;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 
@@ -37,5 +38,20 @@ class CastMemberRepositoryTest extends TestCase
             'id' => $entity->id(),
         ]);
         $this->assertEquals($entity->name, $response->name);
+    }
+
+    public function testFindByIdNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->repository->findById('fake_id');
+    }
+
+    public function testFindById()
+    {
+        $castMember = Model::factory()->create();
+
+        $response = $this->repository->findById($castMember->id);
+        $this->assertEquals($castMember->id, $response->id());
+        $this->assertEquals($castMember->name, $response->name);
     }
 }
