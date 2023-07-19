@@ -8,6 +8,7 @@ use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Entity\CastMember as Entity;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\CastMemberRepository;
+use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 
 class CastMemberRepositoryTest extends TestCase
@@ -87,5 +88,33 @@ class CastMemberRepositoryTest extends TestCase
 
         $this->assertCount(10, $response->items());
         $this->assertEquals(80, $response->total());
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $entity = new Entity(
+            name: 'test',
+            type: CastMemberType::DIRECTOR
+        );
+
+        $this->repository->update($entity);
+    }
+
+    public function testUpdate()
+    {
+        $castMember = Model::factory()->create();
+
+        $entity = new Entity(
+            id: new ValueObjectUuid($castMember->id),
+            name: 'New name',
+            type: CastMemberType::DIRECTOR
+        );
+
+        $response = $this->repository->update($entity);
+
+        $this->assertNotEquals($castMember->name, $response->name);
+        $this->assertEquals('New name', $response->name);
     }
 }
