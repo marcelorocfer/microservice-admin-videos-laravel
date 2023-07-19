@@ -8,6 +8,7 @@ use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
+use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 
 class CastMemberRepository implements CastMemberRepositoryInterface
@@ -55,7 +56,14 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
+        $query = $this->model;
+        if ($filter) {
+            $query->where('name', 'LIKE', "%{$filter}%");
+        }
+        $query->orderBy('name', $order);
+        $dataDB = $query->paginate($totalPage);
 
+        return new PaginationPresenter($dataDB);
     }
 
     public function update(CastMember $castMember): CastMember
