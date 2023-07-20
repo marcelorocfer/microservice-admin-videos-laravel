@@ -117,4 +117,21 @@ class CastMemberRepositoryTest extends TestCase
         $this->assertNotEquals($castMember->name, $response->name);
         $this->assertEquals('New name', $response->name);
     }
+
+    public function testDeleteNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->repository->delete('fake_id');
+    }
+
+    public function testDelete()
+    {
+        $castMember = Model::factory()->create();
+
+        $this->repository->delete($castMember->id);
+
+        $this->assertSoftDeleted('cast_members', [
+            'id' => $castMember->id
+        ]);
+    }
 }

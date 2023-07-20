@@ -84,7 +84,11 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
     public function delete(string $id): bool
     {
+        if (!$dataDB = $this->model->find($id)) {
+            throw new NotFoundException("Cast Member {$id} Not Found");
+        }
 
+        return $dataDB->delete($id);
     }
 
     private function convertToEntity(Model $model): CastMember
