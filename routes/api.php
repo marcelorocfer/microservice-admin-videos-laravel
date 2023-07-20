@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Api\{
     GenreController,
-    CategoryController, 
+    CategoryController,
+    CastMemberController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,7 @@ Route::apiResource(
     name: '/genres',
     controller: GenreController::class
 );
+Route::apiResource('/cast_members', CastMemberController::class);
 
 Route::get('/', function() {
     return response()->json(['message' => 'success']);
