@@ -35,7 +35,7 @@ class GenreRepository implements GenreRepositoryInterface
 
         return $this->toGenre($genreDB);
     }
-    
+
     public function findById(string $id): Entity
     {
         if (!$genreDB = $this->model->find($id)) {
@@ -44,7 +44,7 @@ class GenreRepository implements GenreRepositoryInterface
 
         return $this->toGenre($genreDB);
     }
-    
+
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $result = $this->model
@@ -58,11 +58,10 @@ class GenreRepository implements GenreRepositoryInterface
 
         return $result->toArray();
     }
-    
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
-        $result = $this->model
-                                ->where(function ($query) use ($filter) {
+        $result = $this->model->where(function ($query) use ($filter) {
                                     if ($filter) {
                                         $query->where('name', 'LIKE', "%{$filter}%");
                                     }
@@ -72,7 +71,7 @@ class GenreRepository implements GenreRepositoryInterface
 
         return new PaginationPresenter($result);
     }
-    
+
     public function update(Entity $genre): Entity
     {
         if (!$genreDB = $this->model->find($genre->id)) {
@@ -91,7 +90,7 @@ class GenreRepository implements GenreRepositoryInterface
 
         return $this->toGenre($genreDB);
     }
-    
+
     public function delete(string $id): bool
     {
         if (!$genreDB = $this->model->find($id)) {
@@ -99,7 +98,7 @@ class GenreRepository implements GenreRepositoryInterface
         }
 
         return $genreDB->delete();
-    }    
+    }
 
     private function toGenre(Model $object): Entity
     {

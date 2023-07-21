@@ -52,7 +52,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $categories = $this->model
                             ->where(function($query) use ($filter) {
-                                if ($filter) 
+                                if ($filter)
                                     $query->where('name', 'LIKE', "%{$filter}%");
                             })
                             ->orderBy('id', $order)
@@ -64,7 +64,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $query = $this->model;
         if ($filter) {
-            $query->where('name', 'LIKE', "%{$filter}%");
+            $query = $query->where('name', 'LIKE', "%{$filter}%");
         }
         $query->orderBy('id', $order);
         $paginator = $query->paginate();
@@ -76,7 +76,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         if (!$categoryDB = $this->model->find($category->id())) {
             throw new NotFoundException('Category Not Found');
-        } 
+        }
 
         $categoryDB->update([
             'name' => $category->name,
@@ -93,7 +93,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         if (!$categoryDB = $this->model->find($id)) {
             throw new NotFoundException('Category Not Found');
-        } 
+        }
 
         return $categoryDB->delete();
     }
