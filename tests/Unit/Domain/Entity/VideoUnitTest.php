@@ -23,7 +23,32 @@ class VideoUnitTest extends TestCase
             opened: true,
             rating: Rating::RATE12,
             published: true,
-
         );
+
+        $this->assertEquals($uuid, $entity->id());
+        $this->assertEquals('Title', $entity->title);
+        $this->assertEquals('Description', $entity->description);
+        $this->assertEquals(2029, $entity->yearLaunched);
+        $this->assertEquals(90, $entity->duration);
+        $this->assertEquals(true, $entity->opened);
+        $this->assertEquals(Rating::RATE12, $entity->rating);
+        $this->assertEquals(true, $entity->published);
+    }
+
+    public function testId()
+    {
+        $uuid = (string) RamseyUuid::uuid4();
+
+        $entity = new Video(
+            title: 'Title',
+            description: 'Description',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+            published: true,
+        );
+
+        $this->assertNotEmpty($entity->id());
     }
 }
