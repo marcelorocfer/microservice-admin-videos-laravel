@@ -7,6 +7,7 @@ use Core\Domain\Enum\Rating;
 use Core\Domain\Entity\Video;
 use PHPUnit\Framework\TestCase;
 use Core\Domain\ValueObject\Uuid;
+use Core\Domain\ValueObject\Image;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class VideoUnitTest extends TestCase
@@ -217,5 +218,23 @@ class VideoUnitTest extends TestCase
         );
 
         $this->assertCount(1, $entity->castMemberIds);
+    }
+
+    public function testValueObjectImage()
+    {
+        $entity = new Video(
+            title: 'Title',
+            description: 'Description',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+            published: true,
+            thumbFile: new Image('test-path/image.png'),
+        );
+
+        $this->assertNotNull($entity->thumbFile()->path());
+        $this->assertInstanceOf(Image::class, $entity->thumbFile());
+        $this->assertEquals('test-path/image.png', $entity->thumbFile()->path());
     }
 }
