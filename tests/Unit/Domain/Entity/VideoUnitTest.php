@@ -37,8 +37,6 @@ class VideoUnitTest extends TestCase
 
     public function testId()
     {
-        $uuid = (string) RamseyUuid::uuid4();
-
         $entity = new Video(
             title: 'Title',
             description: 'Description',
@@ -105,5 +103,60 @@ class VideoUnitTest extends TestCase
         );
 
         $this->assertCount(1, $entity->categoriesId);
+    }
+
+    public function testAddGenre()
+    {
+        $genreId = (string) RamseyUuid::uuid4();
+
+        $entity = new Video(
+            title: 'Title',
+            description: 'Description',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+            published: true,
+        );
+
+        $this->assertCount(0, $entity->genresId);
+        $entity->addGenre(
+            genreId: $genreId,
+        );
+        $entity->addGenre(
+            genreId: $genreId,
+        );
+        $this->assertCount(2, $entity->genresId);
+    }
+
+    public function testRemoveGenre()
+    {
+        $genreId = (string) RamseyUuid::uuid4();
+
+        $entity = new Video(
+            title: 'Title',
+            description: 'Description',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+            published: true,
+        );
+
+        $entity->addGenre(
+            genreId: $genreId,
+        );
+
+        $entity->addGenre(
+            genreId: 'uuid',
+        );
+
+        $this->assertCount(2, $entity->genresId);
+
+        $entity->removeGenre(
+            genreId: $genreId,
+        );
+
+        $this->assertCount(1, $entity->genresId);
     }
 }

@@ -11,6 +11,7 @@ class Video
     use MagicalMethodsTrait;
 
     protected array $categoriesId = [];
+    protected array $genresId = [];
 
     public function __construct(
         protected string $title,
@@ -33,5 +34,15 @@ class Video
     public function removeCategoryId(string $categoryId)
     {
         unset($this->categoriesId[array_search($categoryId, $this->categoriesId)]);
+    }
+
+    public function addGenre(string $genreId)
+    {
+        array_push($this->genresId, $genreId);
+    }
+
+    public function removeGenre(string $genreId)
+    {
+        unset($this->genresId[array_search($genreId, $this->genresId)]);
     }
 }
