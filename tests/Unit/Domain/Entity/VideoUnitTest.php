@@ -5,10 +5,14 @@ namespace Tests\Unit\Domain\Entity;
 use DateTime;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Entity\Video;
+use Core\Domain\Enum\MediaStatus;
 use PHPUnit\Framework\TestCase;
-use Core\Domain\ValueObject\Uuid;
-use Core\Domain\ValueObject\Image;
 use Ramsey\Uuid\Uuid as RamseyUuid;
+use Core\Domain\ValueObject\{
+    Image,
+    Media,
+    Uuid
+};
 
 class VideoUnitTest extends TestCase
 {
@@ -254,5 +258,24 @@ class VideoUnitTest extends TestCase
         $this->assertNotNull($entity->thumbHalf());
         $this->assertInstanceOf(Image::class, $entity->thumbHalf());
         $this->assertEquals('test-path/image.png', $entity->thumbHalf()->path());
+    }
+
+    public function testValueObjectMedia()
+    {
+        $trailerFile = new Media(
+            filePath: 'path/video.mp4',
+            mediaStatus: MediaStatus::PENDING,
+            encodedPath: 'path/encoded.extension',
+        );
+
+        $entity = new Video(
+            title: 'Title',
+            description: 'Description',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+            // trailerFile: new Media(),
+        );
     }
 }
