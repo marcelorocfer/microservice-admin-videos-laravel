@@ -2,6 +2,7 @@
 
 namespace Core\Domain\Entity;
 
+use DateTime;
 use Core\Domain\Enum\Rating;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Traits\MagicalMethodsTrait;
@@ -23,8 +24,10 @@ class Video
         protected Rating $rating,
         protected ?Uuid $id = null,
         protected bool $published = false,
+        protected ?DateTime $created_at = null,
     ) {
         $this->id = $this->id ?? Uuid::random();
+        $this->created_at = $this->created_at ?? new DateTime();
     }
 
     public function addCategoryId(string $categoryId)

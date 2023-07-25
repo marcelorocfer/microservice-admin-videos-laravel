@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use DateTime;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Entity\Video;
 use PHPUnit\Framework\TestCase;
@@ -13,6 +14,7 @@ class VideoUnitTest extends TestCase
     public function testAttributes()
     {
         $uuid = (string) RamseyUuid::uuid4();
+        $date = date('Y-m-d H:i:s');
 
         $entity = new Video(
             id: new Uuid($uuid),
@@ -23,6 +25,7 @@ class VideoUnitTest extends TestCase
             opened: true,
             rating: Rating::RATE12,
             published: true,
+            created_at: new DateTime($date),
         );
 
         $this->assertEquals($uuid, $entity->id());
@@ -35,7 +38,7 @@ class VideoUnitTest extends TestCase
         $this->assertEquals(true, $entity->published);
     }
 
-    public function testId()
+    public function testIdAndCreatedAt()
     {
         $entity = new Video(
             title: 'Title',
@@ -48,6 +51,7 @@ class VideoUnitTest extends TestCase
         );
 
         $this->assertNotEmpty($entity->id());
+        $this->assertNotEmpty($entity->created_at());
     }
 
     public function testAddCategoryId()
