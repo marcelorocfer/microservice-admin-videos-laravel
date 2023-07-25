@@ -4,9 +4,12 @@ namespace Core\Domain\Entity;
 
 use DateTime;
 use Core\Domain\Enum\Rating;
-use Core\Domain\ValueObject\Uuid;
-use Core\Domain\ValueObject\Image;
 use Core\Domain\Entity\Traits\MagicalMethodsTrait;
+use Core\Domain\ValueObject\{
+    Uuid,
+    Image,
+    Media,
+};
 
 class Video
 {
@@ -28,6 +31,7 @@ class Video
         protected ?DateTime $created_at = null,
         protected ?Image $thumbFile = null,
         protected ?Image $thumbHalf = null,
+        protected ?Media $trailerFile = null,
     ) {
         $this->id = $this->id ?? Uuid::random();
         $this->created_at = $this->created_at ?? new DateTime();
@@ -71,5 +75,10 @@ class Video
     public function thumbHalf(): ?Image
     {
         return $this->thumbHalf;
+    }
+
+    public function trailerFile(): ?Media
+    {
+        return $this->trailerFile;
     }
 }
