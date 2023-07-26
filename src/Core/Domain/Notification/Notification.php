@@ -25,4 +25,15 @@ class Notification
     {
         return count($this->errors) > 0;
     }
+
+    public function messages(): string
+    {
+        $messages = '';
+
+        foreach ($this->errors as $error) {
+            $messages .= "{$error['context']}: {$error['message']}, ";
+        }
+
+        return $messages;
+    }
 }
