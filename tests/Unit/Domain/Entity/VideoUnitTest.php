@@ -8,6 +8,7 @@ use Core\Domain\Entity\Video;
 use Core\Domain\Enum\MediaStatus;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
+use Core\Domain\Exceptions\EntityValidationException;
 use Core\Domain\ValueObject\{
     Image,
     Media,
@@ -321,5 +322,19 @@ class VideoUnitTest extends TestCase
         $this->assertNotNull($entity->bannerFile());
         $this->assertInstanceOf(Image::class, $entity->bannerFile());
         $this->assertEquals('test-path/banner.png', $entity->bannerFile()->path());
+    }
+
+    public function testValidations()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        new Video(
+            title: 'Ti',
+            description: 'De',
+            yearLaunched: 2029,
+            duration: 90,
+            opened: true,
+            rating: Rating::RATE12,
+        );
     }
 }
