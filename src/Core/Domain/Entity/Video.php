@@ -4,8 +4,9 @@ namespace Core\Domain\Entity;
 
 use DateTime;
 use Core\Domain\Enum\Rating;
-use Core\Domain\Validation\DomainValidation;
+use Core\Domain\Notification\Notification;
 use Core\Domain\Entity\Traits\MagicalMethodsTrait;
+use Core\Domain\Exceptions\EntityValidationException;
 use Core\Domain\ValueObject\{
     Uuid,
     Image,
@@ -99,8 +100,33 @@ class Video
 
     protected function validation()
     {
-        DomainValidation::notNull($this->title);
-        DomainValidation::strMinLength($this->title);
-        DomainValidation::strCanNullAndMaxLength($this->description);
+        $notification = new Notification();
+
+        if (empty($this->title)) {
+            $notification->addError([
+                'context' => 'video',
+                'message' => 'Should not be empty or null',
+            ]);
+        }
+
+        if (strlen($this->title) < 3) {
+            $notification->addError([
+                'context' => 'video',
+                'message' => 'Number of characters smaller than expected',
+            ]);
+        }
+
+        if (strlen($this->description) < 3) {
+            $notification->addError([
+                'context' => 'video',
+                'message' => 'Number of characters smaller than expected',
+            ]);
+        }
+
+        if ($notification->hasErrors()) {
+            throw new EntityValidationException(
+                $notification->messages('video')
+            );
+        }
     }
 }
