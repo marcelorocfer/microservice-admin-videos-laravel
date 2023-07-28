@@ -4,8 +4,6 @@ namespace Core\Domain\Entity;
 
 use DateTime;
 use Core\Domain\Enum\Rating;
-use Core\Domain\Notification\Notification;
-use Core\Domain\Entity\Traits\MagicalMethodsTrait;
 use Core\Domain\Exceptions\EntityValidationException;
 use Core\Domain\ValueObject\{
     Uuid,
@@ -13,10 +11,8 @@ use Core\Domain\ValueObject\{
     Media,
 };
 
-class Video
+class Video extends Entity
 {
-    use MagicalMethodsTrait;
-
     protected array $categorieIds = [];
     protected array $genreIds = [];
     protected array $castMemberIds = [];
@@ -37,6 +33,8 @@ class Video
         protected ?Media $trailerFile = null,
         protected ?Media $videoFile = null,
     ) {
+        parent::__construct();
+
         $this->id = $this->id ?? Uuid::random();
         $this->created_at = $this->created_at ?? new DateTime();
 
@@ -100,32 +98,30 @@ class Video
 
     protected function validation()
     {
-        $notification = new Notification();
-
         if (empty($this->title)) {
-            $notification->addError([
+            $this->notification->addError([
                 'context' => 'video',
                 'message' => 'Should not be empty or null',
             ]);
         }
 
         if (strlen($this->title) < 3) {
-            $notification->addError([
+            $this->notification->addError([
                 'context' => 'video',
                 'message' => 'Number of characters smaller than expected',
             ]);
         }
 
         if (strlen($this->description) < 3) {
-            $notification->addError([
+            $this->notification->addError([
                 'context' => 'video',
                 'message' => 'Number of characters smaller than expected',
             ]);
         }
 
-        if ($notification->hasErrors()) {
+        if ($this->notification->hasErrors()) {
             throw new EntityValidationException(
-                $notification->messages('video')
+                $this->notification->messages('video')
             );
         }
     }
