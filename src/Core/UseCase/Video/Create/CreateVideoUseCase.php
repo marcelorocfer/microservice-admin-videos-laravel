@@ -1,10 +1,12 @@
 <?php
 
-namespace Core\UseCase\Video;
+namespace Core\UseCase\Video\Create;
 
 use Core\UseCase\Interfaces\TransactionInterface;
-use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 class CreateVideoUseCase
@@ -15,4 +17,9 @@ class CreateVideoUseCase
         protected FileStorageInterface $storage,
         protected VideoEventManagerInterface $eventManager,
     ) {}
+
+    public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
+    {
+        return new CreateOutputVideoDTO();
+    }
 }
