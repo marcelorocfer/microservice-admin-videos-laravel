@@ -5,6 +5,7 @@ namespace Core\UseCase\Video\Create;
 use Throwable;
 use Core\Domain\Entity\Video as Entity;
 use Core\Domain\Events\VideoCreatedEvent;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Interfaces\FileStorageInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
@@ -51,6 +52,7 @@ class CreateVideoUseCase
 
     private function createEntity(CreateInputVideoDTO $input): Entity
     {
+        // create entity -> input
         $entity = new Entity(
             title: $input->title,
             description: $input->description,
@@ -60,14 +62,20 @@ class CreateVideoUseCase
             rating: $input->rating,
         );
 
+        // add categories_ids in entity - validate
+        $this->validateCategoriesId($input->categories);
         foreach ($input->categories as $categoryId) {
             $entity->addCategoryId($categoryId);
         }
 
+        // add genres_ids in entity - validate
+        $this->validateGenresId($input->genres);
         foreach ($input->genres as $genreId) {
             $entity->addGenre($genreId);
         }
 
+        // add cast_members_ids in entity - validate
+        $this->validateCastMembersId($input->castMembers);
         foreach ($input->castMembers as $castMemberId) {
             $entity->addCastMember($castMemberId);
         }
@@ -85,5 +93,56 @@ class CreateVideoUseCase
         }
 
         return '';
+    }
+
+    private function validateCategoriesId(array $categoriesId = [])
+    {
+        $categoriesDB = $this->repositoryCategory->getIdsListIds($categoriesId);
+
+        $arrayDiff = array_diff($categoriesId, $categoriesDB);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'Categories' : 'Category',
+                implode(', ', $arrayDiff)
+            );
+
+            throw new NotFoundException($msg);
+        }
+    }
+
+    private function validateGenresId(array $genresId = [])
+    {
+        $genresDB = $this->repositoryGenre->getIdsListIds($genresId);
+
+        $arrayDiff = array_diff($genresId, $genresDB);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'Genres' : 'Genre',
+                implode(', ', $arrayDiff)
+            );
+
+            throw new NotFoundException($msg);
+        }
+    }
+
+    private function validateCastMembersId(array $castMembersId = [])
+    {
+        $castMembersDB = $this->repositoryCastMember->getIdsListIds($castMembersId);
+
+        $arrayDiff = array_diff($castMembersId, $castMembersDB);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'CastMembers' : 'CastMember',
+                implode(', ', $arrayDiff)
+            );
+
+            throw new NotFoundException($msg);
+        }
     }
 }

@@ -115,6 +115,9 @@ class CreateVideoUseCaseTest extends TestCase
             70,
             true,
             Rating::RATE14,
+            [],
+            [],
+            [],
         ]);
     }
 
