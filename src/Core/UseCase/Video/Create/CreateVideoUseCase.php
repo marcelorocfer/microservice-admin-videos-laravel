@@ -7,9 +7,12 @@ use Core\Domain\Entity\Video as Entity;
 use Core\Domain\Events\VideoCreatedEvent;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 class CreateVideoUseCase
@@ -19,6 +22,10 @@ class CreateVideoUseCase
         protected TransactionInterface $transaction,
         protected FileStorageInterface $storage,
         protected VideoEventManagerInterface $eventManager,
+
+        protected CategoryRepositoryInterface $repositoryCategory,
+        protected GenreRepositoryInterface $repositoryGenre,
+        protected CastMemberRepositoryInterface $repositoryCastMember,
     ) {}
 
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO

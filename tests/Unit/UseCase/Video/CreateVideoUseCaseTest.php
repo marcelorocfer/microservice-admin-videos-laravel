@@ -9,9 +9,12 @@ use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Video as Entity;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\Video\Create\CreateVideoUseCase as UseCase;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
@@ -24,6 +27,10 @@ class CreateVideoUseCaseTest extends TestCase
             transaction: $this->createMockTransaction(),
             storage: $this->createMockFileStorage(),
             eventManager: $this->createMockEventManager(),
+
+            repositoryCategory: $this->createMockRepositoryCategory(),
+            repositoryGenre: $this->createMockRepositoryGenre(),
+            repositoryCastMember: $this->createMockRepositoryCastMember(),
         );
 
         $this->assertTrue(true);
@@ -36,6 +43,10 @@ class CreateVideoUseCaseTest extends TestCase
             transaction: $this->createMockTransaction(),
             storage: $this->createMockFileStorage(),
             eventManager: $this->createMockEventManager(),
+
+            repositoryCategory: $this->createMockRepositoryCategory(),
+            repositoryGenre: $this->createMockRepositoryGenre(),
+            repositoryCastMember: $this->createMockRepositoryCastMember(),
         );
 
         $response = $useCase->exec(
@@ -49,6 +60,27 @@ class CreateVideoUseCaseTest extends TestCase
     {
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepository->shouldReceive('insert')->andReturn($this->createMockEntity());
+        return $mockRepository;
+    }
+
+    private function createMockRepositoryCategory(array $categoriesResponse = [])
+    {
+        $mockRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
+        $mockRepository->shouldReceive('getIdsListIds')->andReturn($categoriesResponse);
+        return $mockRepository;
+    }
+
+    private function createMockRepositoryGenre(array $genresResponseIds = [])
+    {
+        $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
+        $mockRepository->shouldReceive('getIdsListIds')->andReturn($genresResponseIds);
+        return $mockRepository;
+    }
+
+    private function createMockRepositoryCastMember(array $castMembersResponseIds = [])
+    {
+        $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
+        $mockRepository->shouldReceive('getIdsListIds')->andReturn($castMembersResponseIds);
         return $mockRepository;
     }
 
