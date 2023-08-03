@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use Core\Domain\Entity\Entity;
 use Core\Domain\Entity\Category;
 use App\Models\Category as Model;
 use Core\Domain\Exceptions\NotFoundException;
@@ -18,7 +19,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->model = $category;
     }
 
-    public function insert(Category $category): Category
+    public function insert(Entity $category): Entity
     {
         $category = $this->model->create([
             'id' => $category->id(),
@@ -72,7 +73,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         return new PaginationPresenter($paginator);
     }
 
-    public function update(Category $category): Category
+    public function update(Entity $category): Entity
     {
         if (!$categoryDB = $this->model->find($category->id())) {
             throw new NotFoundException('Category Not Found');

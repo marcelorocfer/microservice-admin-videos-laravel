@@ -5,12 +5,9 @@ namespace Core\Domain\Entity;
 use DateTime;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Validation\DomainValidation;
-use Core\Domain\Entity\Traits\MagicalMethodsTrait;
 
-class Category
+class Category extends Entity
 {
-    use MagicalMethodsTrait;
-
     public function __construct(
         protected Uuid | string $id = '',
         protected string $name = '',
@@ -25,17 +22,17 @@ class Category
     }
 
     public function activate(): void
-    {   
+    {
         $this->is_active = true;
     }
 
     public function disable(): void
-    {   
+    {
         $this->is_active = false;
     }
 
     public function update(string $name, string $description = '')
-    { 
+    {
         $this->name = $name;
         $this->description = $description;
 
