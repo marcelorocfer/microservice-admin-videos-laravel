@@ -7,9 +7,9 @@ use Core\Domain\ValueObject\Media;
 use Core\Domain\ValueObject\Image;
 use Core\Domain\Entity\Video as Entity;
 
-class VideoBuilder implements Builder
+class BuilderVideo implements Builder
 {
-    private ?Video $entity = null;
+    private ?Entity $entity = null;
 
     public function __construct()
     {
@@ -31,6 +31,18 @@ class VideoBuilder implements Builder
             opened: true,
             rating: $input->rating,
         );
+
+        foreach ($input->categories as $categoryId) {
+            $this->entity->addCategoryId($categoryId);
+        }
+
+        foreach ($input->genres as $genreId) {
+            $this->entity->addGenre($genreId);
+        }
+
+        foreach ($input->castMembers as $castMemberId) {
+            $this->entity->addCastMember($castMemberId);
+        }
     }
 
     public function addMediaVideo(string $path, MediaStatus $mediaStatus): void
