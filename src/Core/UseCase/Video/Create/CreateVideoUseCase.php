@@ -58,6 +58,8 @@ class CreateVideoUseCase
     private function createEntity(CreateInputVideoDTO $input): Entity
     {
         // create entity -> input
+        $this->validateAllIds($input);
+
         $entity = new Entity(
             title: $input->title,
             description: $input->description,
@@ -67,20 +69,17 @@ class CreateVideoUseCase
             rating: $input->rating,
         );
 
-        // add categories_ids in entity - validate
-        $this->validateCategoriesId($input->categories);
+        // add categories_ids in entity
         foreach ($input->categories as $categoryId) {
             $entity->addCategoryId($categoryId);
         }
 
-        // add genres_ids in entity - validate
-        $this->validateGenresId($input->genres);
+        // add genres_ids in entity
         foreach ($input->genres as $genreId) {
             $entity->addGenre($genreId);
         }
 
-        // add cast_members_ids in entity - validate
-        $this->validateCastMembersId($input->castMembers);
+        // add cast_members_ids in entity
         foreach ($input->castMembers as $castMemberId) {
             $entity->addCastMember($castMemberId);
         }
@@ -137,16 +136,38 @@ class CreateVideoUseCase
         return null;
     }
 
-    private function validateCategoriesId(array $categoriesId = [])
+    protected function validateAllIds(object $input)
     {
-        $categoriesDB = $this->repositoryCategory->getIdsListIds($categoriesId);
+        $this->validateIds(
+            ids: $input->categories,
+            repository: $this->repositoryCategory,
+            singularLabel: 'Category',
+            pluralLabel: 'Categories',
+        );
 
-        $arrayDiff = array_diff($categoriesId, $categoriesDB);
+        $this->validateIds(
+            ids: $input->genres,
+            repository: $this->repositoryGenre,
+            singularLabel: 'Genre',
+        );
+
+        $this->validateIds(
+            ids: $input->castMembers,
+            repository: $this->repositoryCastMember,
+            singularLabel: 'Cast Member',
+        );
+    }
+
+    private function validateIds(array $ids = [], $repository, string $singularLabel, ?string $pluralLabel = null)
+    {
+        $idsDB = $repository->getIdsListIds($ids);
+
+        $arrayDiff = array_diff($ids, $idsDB);
 
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',
-                count($arrayDiff) > 1 ? 'Categories' : 'Category',
+                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $singularLabel,
                 implode(', ', $arrayDiff)
             );
 
