@@ -18,7 +18,7 @@ use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\Video\Create\CreateVideoUseCase as UseCase;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
-class CreateVideoUseCaseTest extends TestCase
+class CreateVideoUseCaseUnitTest extends TestCase
 {
     protected $useCase;
 
