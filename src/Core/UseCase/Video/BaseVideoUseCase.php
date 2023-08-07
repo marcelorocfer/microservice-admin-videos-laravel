@@ -4,7 +4,7 @@ namespace Core\UseCase\Video;
 
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Events\VideoCreatedEvent;
-use Core\UseCase\Video\Builder\BuilderVideo;
+use Core\Domain\Builder\Video\BuilderVideo;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Interfaces\FileStorageInterface;
