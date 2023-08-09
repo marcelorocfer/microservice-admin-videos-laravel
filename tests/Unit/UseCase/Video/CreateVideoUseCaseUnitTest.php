@@ -29,6 +29,8 @@ class CreateVideoUseCaseUnitTest extends TestCase
 
         int $timesCallMethodCommitTransaction = 1,
         int $timesCallMethodRollbackTransaction = 0,
+
+        int $timesCallMethodStoreFileStorage = 0,
     ) {
         $this->useCase = new UseCase(
             repository: $this->createMockRepository(
@@ -39,7 +41,9 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 timesCallCommit:$timesCallMethodCommitTransaction,
                 timesCallRollback: $timesCallMethodRollbackTransaction,
             ),
-            storage: $this->createMockFileStorage(),
+            storage: $this->createMockFileStorage(
+                timesCall: $timesCallMethodStoreFileStorage
+            ),
             eventManager: $this->createMockEventManager(),
 
             repositoryCategory: $this->createMockRepositoryCategory(),
@@ -104,8 +108,11 @@ class CreateVideoUseCaseUnitTest extends TestCase
         array $thumb,
         array $thumbHalf,
         array $banner,
+        int $timesCall,
     ) {
-        $this->createUseCase();
+        $this->createUseCase(
+            timesCallMethodStoreFileStorage: $timesCall
+        );
 
         $response = $this->useCase->exec(
             input: $this->createMockInputDTO(
@@ -133,6 +140,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 'thumb' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'banner' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
+                'timesStorage' => 5,
             ],
             [
                 'video' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
@@ -140,6 +148,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 'thumb' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => null, 'expected' => null],
                 'banner' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
+                'timesStorage' => 3,
             ],
             [
                 'video' => ['value' => null, 'expected' => null],
@@ -147,6 +156,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 'thumb' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => null, 'expected' => null],
                 'banner' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
+                'timesStorage' => 2,
             ],
             [
                 'video' => ['value' => null, 'expected' => null],
@@ -154,6 +164,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 'thumb' => ['value' => null, 'expected' => null],
                 'thumbHalf' => ['value' => null, 'expected' => null],
                 'banner' => ['value' => null, 'expected' => null],
+                'timesStorage' => 0,
             ],
         ];
     }
@@ -203,10 +214,12 @@ class CreateVideoUseCaseUnitTest extends TestCase
         return $mockTransaction;
     }
 
-    private function createMockFileStorage()
+    private function createMockFileStorage(int $timesCall)
     {
         $mockFileStorage = Mockery::mock(stdClass::class, FileStorageInterface::class);
-        $mockFileStorage->shouldReceive('store')->andReturn('path/file.png');
+        $mockFileStorage->shouldReceive('store')
+                        ->times($timesCall)
+                        ->andReturn('path/file.png');
         return $mockFileStorage;
     }
 
