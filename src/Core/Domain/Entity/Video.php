@@ -4,13 +4,11 @@ namespace Core\Domain\Entity;
 
 use DateTime;
 use Core\Domain\Enum\Rating;
+use Core\Domain\ValueObject\Uuid;
+use Core\Domain\ValueObject\Image;
+use Core\Domain\ValueObject\Media;
 use Core\Domain\Factory\VideoValidatorFactory;
 use Core\Domain\Notification\NotificationException;
-use Core\Domain\ValueObject\{
-    Uuid,
-    Image,
-    Media,
-};
 
 class Video extends Entity
 {
@@ -39,6 +37,13 @@ class Video extends Entity
         $this->id = $this->id ?? Uuid::random();
         $this->created_at = $this->created_at ?? new DateTime();
 
+        $this->validation();
+    }
+
+    public function update(string $title, string $description): void
+    {
+        $this->title = $title;
+        $this->description = $description;
         $this->validation();
     }
 
