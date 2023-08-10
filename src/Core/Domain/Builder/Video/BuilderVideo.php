@@ -9,7 +9,7 @@ use Core\Domain\Entity\Video as Entity;
 
 class BuilderVideo implements Builder
 {
-    private ?Entity $entity = null;
+    protected ?Entity $entity = null;
 
     public function __construct()
     {

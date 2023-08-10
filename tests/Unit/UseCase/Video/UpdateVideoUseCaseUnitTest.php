@@ -3,7 +3,6 @@
 namespace Tests\Unit\UseCase\Video;
 
 use Mockery;
-use Core\Domain\Enum\Rating;
 use Core\Domain\ValueObject\Uuid;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
@@ -47,10 +46,6 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
             Uuid::random(),
             'title',
             'description',
-            2023,
-            70,
-            true,
-            Rating::RATE14,
             $categoriesIds,
             $genresIds,
             $castMembersIds,
