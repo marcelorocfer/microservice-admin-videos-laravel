@@ -4,8 +4,10 @@ namespace Tests\Unit\UseCase\Video;
 
 use Mockery;
 use stdClass;
+use Core\Domain\Enum\Rating;
 use PHPUnit\Framework\TestCase;
 use Core\Domain\ValueObject\Uuid;
+use Core\Domain\Entity\Video as Entity;
 use Core\UseCase\Video\List\ListVideoUseCase;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Video\List\DTO\ListInputVideoUseCase;
@@ -25,16 +27,34 @@ class ListVideoUseCaseUnitTest extends TestCase
             input: $this->mockInputDTO($uuid)
         );
 
-        $this->assertInstanceOf(ListInputVideoUseCase::class, $response);
+        $this->assertInstanceOf(ListOutputVideoUseCase::class, $response);
     }
 
     private function mockInputDTO(string $id)
     {
-        return Mockery::mock(ListOutputVideoUseCase::class, [$id]);
+        return Mockery::mock(ListInputVideoUseCase::class, [
+            $id
+        ]);
     }
 
     private function mockRepository()
     {
-        return Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mockRepository->shouldReceive('findById')
+                        ->once()
+                        ->andReturn($this->getEntity());
+        return $mockRepository;
+    }
+
+    private function getEntity(): Entity
+    {
+        return new Entity(
+            title: 'title',
+            description: 'description',
+            yearLaunched: 2026,
+            duration: 1,
+            opened: true,
+            rating: Rating::L,
+        );
     }
 }
