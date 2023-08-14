@@ -5,9 +5,13 @@ namespace Core\UseCase\Video\Paginate\DTO;
 class PaginateOutputVideoDTO
 {
     public function __construct(
-        public string $filter = '',
-        public string $order = 'DESC',
-        public int $page = 1,
-        public int $per_page = 15,
+        public array $items,
+        public int $total,
+        public int $current_page,
+        public int $last_page,
+        public int $first_page,
+        public int $per_page,
+        public int $to,
+        public int $from,
     ) {}
 }

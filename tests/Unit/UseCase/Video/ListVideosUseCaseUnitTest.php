@@ -34,7 +34,7 @@ class ListVideosUseCaseUnitTest extends TestCase
     {
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepository->shouldReceive('paginate')
-                        // ->once()
+                        ->once()
                         ->andReturn($this->mockPagination());
         return $mockRepository;
     }
