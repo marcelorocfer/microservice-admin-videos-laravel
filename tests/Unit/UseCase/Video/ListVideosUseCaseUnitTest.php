@@ -6,8 +6,10 @@ use Mockery;
 use stdClass;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\UseCase\UseCaseTrait;
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\ListVideos\ListVideosUseCase;
+use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
+use Core\UseCase\Video\Paginate\DTO\PaginateOutputVideoDTO;
 
 class ListVideosUseCaseUnitTest extends TestCase
 {
@@ -19,7 +21,11 @@ class ListVideosUseCaseUnitTest extends TestCase
             repository: $this->mockRepository()
         );
 
-        $this->assertTrue(true);
+        $response = $useCase->exec(
+            input: $this->mockInputDTO()
+        );
+
+        $this->assertInstanceOf(PaginateOutputVideoDTO::class, $response);
 
         Mockery::close();
     }
@@ -31,5 +37,15 @@ class ListVideosUseCaseUnitTest extends TestCase
                         // ->once()
                         ->andReturn($this->mockPagination());
         return $mockRepository;
+    }
+
+    private function mockInputDTO()
+    {
+        return Mockery::mock(PaginateInputVideoDTO::class, [
+            '',
+            'DESC',
+            1,
+            15,
+        ]);
     }
 }
