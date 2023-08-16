@@ -6,6 +6,7 @@ use App\Events\VideoEvent;
 use App\Services\Storage\FileStorage;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GenreRepository;
+use App\Repositories\Eloquent\VideoRepository;
 use App\Repositories\Transactions\DBTransaction;
 use App\Repositories\Eloquent\CategoryRepository;
 use Core\UseCase\Interfaces\FileStorageInterface;
@@ -13,7 +14,6 @@ use Core\UseCase\Interfaces\TransactionInterface;
 use App\Repositories\Eloquent\CastMemberRepository;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use App\Repositories\Eloquent\VideoEloquentRepository;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
@@ -78,7 +78,7 @@ class CleanArchServiceProvider extends ServiceProvider
         );
         $this->app->singleton(
             VideoRepositoryInterface::class,
-            VideoEloquentRepository::class,
+            VideoRepository::class,
         );
     }
 }

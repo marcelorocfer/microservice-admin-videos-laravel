@@ -7,7 +7,7 @@ use Core\Domain\Entity\Entity;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 
-class VideoEloquentRepository implements VideoRepositoryInterface
+class VideoRepository implements VideoRepositoryInterface
 {
     protected $model;
 

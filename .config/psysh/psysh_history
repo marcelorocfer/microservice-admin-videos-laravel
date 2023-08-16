@@ -1,1 +1,3 @@
 \App\Models\Video::factory()->count(10)->create();
+\App\Models\Video::factory()->count(10)->create();
+exit
