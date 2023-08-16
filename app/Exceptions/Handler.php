@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Throwable;
 use Illuminate\Http\Response;
 use Core\Domain\Exceptions\NotFoundException;
+use Core\Domain\Notification\NotificationException;
 use Core\Domain\Exceptions\EntityValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -51,6 +52,10 @@ class Handler extends ExceptionHandler
         if ($exception instanceof EntityValidationException) {
             return $this->showError($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
+        if ($exception instanceof NotificationException) {
+            return $this->showError($exception->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } // ok => HTTP_INTERNAL_SERVER_ERROR
 
         return parent::render($request, $exception);
     }
