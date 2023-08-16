@@ -25,8 +25,13 @@ class Category extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function genre() 
+    public function genre()
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function videos()
+    {
+        return $this->belongsToMany(Video::class);
     }
 }

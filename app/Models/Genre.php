@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Genre extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     public $incrementing = false;
 
@@ -25,8 +25,13 @@ class Genre extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function categories() 
+    public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function videos()
+    {
+        return $this->belongsToMany(Video::class);
     }
 }
