@@ -2,8 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
+use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
 use Core\Domain\Entity\Entity;
+use Core\Domain\ValueObject\Uuid;
+use Core\Domain\Entity\Video as VideoEntity;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 
@@ -18,7 +21,18 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function insert(Entity $entity): Entity
     {
+        $entityDB = $this->model->create([
+            'id' => $entity->id(),
+            'title' => $entity->title,
+            'description' => $entity->description,
+            'year_launched' => $entity->yearLaunched,
+            'rating' => $entity->rating->value,
+            'duration' => $entity->duration,
+            'opened' => $entity->opened,
 
+        ]);
+
+        return $this->convertObjectToEntity($entityDB);
     }
 
     public function findById(string $id): Entity
@@ -49,5 +63,18 @@ class VideoRepository implements VideoRepositoryInterface
     public function updateMedia(Entity $entity): Entity
     {
 
+    }
+
+    private function convertObjectToEntity(object $object): VideoEntity
+    {
+        return new VideoEntity(
+            id: new Uuid($object->id),
+            title: $object->title,
+            description: $object->description,
+            yearLaunched: (int) $object->year_launched,
+            rating: Rating::from($object->rating),
+            duration: (bool) $object->duration,
+            opened: $object->opened,
+        );
     }
 }
