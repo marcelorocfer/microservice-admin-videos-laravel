@@ -5,10 +5,30 @@ namespace App\Models;
 use App\Enums\ImageTypes;
 use App\Enums\MediaTypes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Video extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'id',
+        'title',
+        'description',
+        'year_launched',
+        'opened',
+        'rating',
+        'duration',
+    ];
+
+    public $incrementing = false;
+
+    protected $casts = [
+        'id' => 'string',
+        'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
+    ];
 
     public function categories()
     {
