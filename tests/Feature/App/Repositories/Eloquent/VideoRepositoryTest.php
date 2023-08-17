@@ -75,7 +75,7 @@ class VideoRepositoryTest extends TestCase
             $entity->addCastMember($castMember->id);
         }
 
-        $this->repository->insert($entity);
+        $entityInDB = $this->repository->insert($entity);
 
         $this->assertDatabaseHas('videos', [
             'id' => $entity->id()
@@ -84,5 +84,9 @@ class VideoRepositoryTest extends TestCase
         $this->assertDatabaseCount('genre_video', 4);
         $this->assertDatabaseCount('category_video', 4);
         $this->assertDatabaseCount('cast_member_video', 4);
+
+        $this->assertCount(4, $entityInDB->categorieIds);
+        $this->assertCount(4, $entityInDB->genreIds);
+        $this->assertCount(4, $entityInDB->castMemberIds);
     }
 }
