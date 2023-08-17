@@ -7,6 +7,7 @@ use App\Models\Video as Model;
 use Core\Domain\Entity\Entity;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as VideoEntity;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 
@@ -39,7 +40,11 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function findById(string $id): Entity
     {
+        if (!$entityDB = $this->model->find($id)) {
+            throw new NotFoundException('Video not found');
+        }
 
+        return $this->convertObjectToEntity($entityDB);
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array

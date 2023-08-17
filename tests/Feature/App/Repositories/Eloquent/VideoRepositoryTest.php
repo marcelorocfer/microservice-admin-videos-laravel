@@ -9,6 +9,7 @@ use App\Models\CastMember;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
 use Core\Domain\Entity\Video as EntityVideo;
+use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\VideoRepository;
 use Core\Domain\Repository\VideoRepositoryInterface;
 
@@ -88,5 +89,12 @@ class VideoRepositoryTest extends TestCase
         $this->assertEquals($categories->pluck('id')->toArray(), $entityInDB->categorieIds);
         $this->assertEquals($genres->pluck('id')->toArray(), $entityInDB->genreIds);
         $this->assertEquals($castMembers->pluck('id')->toArray(), $entityInDB->castMemberIds);
+    }
+
+    public function testNotFoundVideo()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->repository->findById('fake_value');
     }
 }
