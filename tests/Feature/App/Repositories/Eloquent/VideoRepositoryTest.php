@@ -97,4 +97,14 @@ class VideoRepositoryTest extends TestCase
 
         $this->repository->findById('fake_value');
     }
+
+    public function testFindById()
+    {
+        $video = Model::factory()->create();
+
+        $response = $this->repository->findById($video->id);
+
+        $this->assertEquals($video->id, $response->id());
+        $this->assertEquals($video->title, $response->title);
+    }
 }
