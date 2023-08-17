@@ -32,6 +32,8 @@ class VideoRepository implements VideoRepositoryInterface
 
         ]);
 
+        $this->syncRelationships($entityDB, $entity);
+
         return $this->convertObjectToEntity($entityDB);
     }
 
@@ -63,6 +65,13 @@ class VideoRepository implements VideoRepositoryInterface
     public function updateMedia(Entity $entity): Entity
     {
 
+    }
+
+    protected function syncRelationships(Model $model, Entity $entity)
+    {
+        $model->categories()->sync($entity->categorieIds);
+        $model->genres()->sync($entity->genreIds);
+        $model->castMembers()->sync($entity->castMemberIds);
     }
 
     private function convertObjectToEntity(object $object): VideoEntity
