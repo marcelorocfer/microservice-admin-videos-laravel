@@ -9,6 +9,7 @@ use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as VideoEntity;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
+use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\VideoRepositoryInterface;
 
 class VideoRepository implements VideoRepositoryInterface
@@ -63,7 +64,16 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
+        $result = $this->model
+                        ->where(function ($query) use ($filter) {
+                            if ($filter) {
+                                $query->where('title', 'LIKE', "%{$filter}%");
+                            }
+                        })
+                        ->orderBy('title', $order)
+                        ->paginate($totalPage, ['*'], 'page', $page);
 
+        return new PaginationPresenter($result);
     }
 
     public function update(Entity $entity): Entity
