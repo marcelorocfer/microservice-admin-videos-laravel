@@ -93,6 +93,8 @@ class VideoRepository implements VideoRepositoryInterface
 
         $entityDB->refresh();
 
+        $this->syncRelationships($entityDB, $entity);
+
         return $this->convertObjectToEntity($entityDB);
     }
 
