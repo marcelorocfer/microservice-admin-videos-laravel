@@ -100,7 +100,11 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function delete(string $id): bool
     {
+        if (!$entityDB = $this->model->find($id)) {
+            throw new NotFoundException('Video not found');
+        }
 
+        return $entityDB->delete();
     }
 
     public function updateMedia(Entity $entity): Entity
