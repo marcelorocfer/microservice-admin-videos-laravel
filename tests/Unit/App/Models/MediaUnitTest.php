@@ -3,6 +3,7 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Media;
+use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,6 +18,7 @@ class MediaUnitTest extends ModelTestCase
     {
         return [
             HasFactory::class,
+            UuidTrait::class,
         ];
     }
 
