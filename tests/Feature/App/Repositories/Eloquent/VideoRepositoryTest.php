@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
+use DateTime;
 use Tests\TestCase;
 use App\Models\Genre;
 use App\Models\Category;
 use App\Models\CastMember;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
+use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as EntityVideo;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\VideoRepository;
@@ -187,6 +189,32 @@ class VideoRepositoryTest extends TestCase
             opened: true,
         );
 
-        $this->repository->update($entity, 'fake_value');
+        $this->repository->update($entity);
+    }
+
+    public function testUpdate()
+    {
+        $videoDB = Model::factory()->create();
+
+        $this->assertDatabaseHas('videos', [
+            'title' => $videoDB->title
+        ]);
+
+        $entity = new EntityVideo(
+            id: new Uuid($videoDB->id),
+            title: 'Test',
+            description: 'Test',
+            yearLaunched: 2028,
+            rating: Rating::L,
+            duration: 1,
+            opened: true,
+            created_at: new DateTime($videoDB->created_at),
+        );
+
+        $this->repository->update($entity);
+
+        $this->assertDatabaseHas('videos', [
+            'title' => 'Test'
+        ]);
     }
 }
