@@ -247,4 +247,19 @@ class VideoRepositoryTest extends TestCase
         $this->expectException(NotFoundException::class);
         $this->repository->delete('fake_value');
     }
+
+    public function testDelete()
+    {
+        $video = Model::factory()->create();
+
+        $this->assertDatabaseHas('videos', [
+            'id' => $video->id
+        ]);
+
+        $this->repository->delete($video->id);
+
+        $this->assertSoftDeleted('videos', [
+            'id' => $video->id
+        ]);
+    }
 }
