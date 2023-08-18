@@ -173,4 +173,20 @@ class VideoRepositoryTest extends TestCase
             ],
         ];
     }
+
+    public function testUpdateNotFoundId()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $entity = new EntityVideo(
+            title: 'Test',
+            description: 'Test',
+            yearLaunched: 2028,
+            rating: Rating::L,
+            duration: 1,
+            opened: true,
+        );
+
+        $this->repository->update($entity, 'fake_value');
+    }
 }
