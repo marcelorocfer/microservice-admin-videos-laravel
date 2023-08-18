@@ -109,7 +109,17 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function updateMedia(Entity $entity): Entity
     {
+        if (!$entityDB = $this->model->find($entity->id())) {
+            throw new NotFoundException('Video not found');
+        }
 
+        if ($trailer = $entity->trailerFile()) {
+            $entityDB->trailer()->updateOrCreate([
+                'file_path' => $trailer->filePath,
+                'media_status' => $trailer->mediaStatus->value,
+                'encoded_path' => $trailer->encodedPath,
+            ]);
+        }
     }
 
     protected function syncRelationships(Model $model, Entity $entity)
