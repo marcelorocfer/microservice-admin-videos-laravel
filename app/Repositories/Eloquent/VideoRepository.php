@@ -15,6 +15,7 @@ use Core\Domain\Repository\PaginationInterface;
 use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Media as ValueObjectMedia;
+use Core\Domain\ValueObject\Image as ValueObjectImage;
 
 class VideoRepository implements VideoRepositoryInterface
 {
@@ -175,6 +176,10 @@ class VideoRepository implements VideoRepositoryInterface
                 mediaStatus: MediaStatus::from($trailer->media_status),
                 encodedPath: $trailer->encoded_path,
             ));
+        }
+
+        if ($banner = $model->banner) {
+            $entity->setBannerFile(new ValueObjectImage(path: $banner->path));
         }
 
         return $entity;
