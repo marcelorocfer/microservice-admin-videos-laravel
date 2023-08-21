@@ -6,6 +6,7 @@ use DateTime;
 use Tests\TestCase;
 use App\Models\Genre;
 use App\Models\Category;
+use App\Enums\ImageTypes;
 use App\Models\CastMember;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
@@ -15,6 +16,7 @@ use Core\Domain\Entity\Video as EntityVideo;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\VideoRepository;
 use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\Domain\ValueObject\Image as ValueObjectImage;
 use Core\Domain\ValueObject\Media as ValueObjectMedia;
 
 class VideoRepositoryTest extends TestCase
@@ -306,5 +308,31 @@ class VideoRepositoryTest extends TestCase
         ]);
 
         $this->assertNotNull($entityDB->trailerFile());
+    }
+
+    public function testInsertWithImageBanner()
+    {
+        $entity = new EntityVideo(
+            title: 'Test Title',
+            description: 'Test description',
+            yearLaunched: 2028,
+            rating: Rating::L,
+            duration: 1,
+            opened: true,
+            bannerFile: new ValueObjectImage(
+                path: 'test.jpg',
+            ),
+        );
+
+        $this->repository->insert($entity);
+        $this->assertDatabaseCount('medias_video', 0);
+
+        $this->repository->updateMedia($entity);
+        $this->assertDatabaseHas('images_video', [
+            'video_id' => $entity->id(),
+            'path' => 'test.jpg',
+            'type' => ImageTypes::BANNER->value,
+        ]);
+        $this->assertDatabaseCount('medias_video', 0);
     }
 }

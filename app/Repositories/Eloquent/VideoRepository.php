@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\ImageTypes;
 use App\Enums\MediaTypes;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
@@ -123,6 +124,14 @@ class VideoRepository implements VideoRepositoryInterface
                 'media_status' => $trailer->mediaStatus->value,
                 'encoded_path' => $trailer->encodedPath,
                 'type' => MediaTypes::TRAILER->value,
+            ]);
+        }
+
+        if ($banner = $entity->bannerFile()) {
+            $action = $entityDB->banner()->first() ? 'update' : 'create';
+            $entityDB->banner()->{$action}([
+                'path' => $banner->path(),
+                'type' => ImageTypes::BANNER->value,
             ]);
         }
 
