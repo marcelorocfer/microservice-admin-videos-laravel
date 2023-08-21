@@ -9,11 +9,11 @@ use App\Models\Category;
 use App\Models\CastMember;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
+use Core\Domain\Enum\MediaStatus;
 use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as EntityVideo;
 use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\VideoRepository;
-use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Media as ValueObjectMedia;
 
@@ -284,12 +284,25 @@ class VideoRepositoryTest extends TestCase
 
         $this->assertDatabaseCount('medias_video', 0);
         $this->repository->updateMedia($entity);
-        $this->repository->updateMedia($entity);
-        $this->assertDatabaseCount('medias_video', 1);
         $this->assertDatabaseHas('medias_video', [
             'video_id' => $entity->id(),
             'file_path' => 'test.mp4',
             'media_status' => MediaStatus::PROCESSING->value,
+        ]);
+
+        $entity->setTrailerFile(new ValueObjectMedia(
+            filePath: 'test2.mp4',
+            mediaStatus: MediaStatus::COMPLETED,
+            encodedPath: 'test2.xpto'
+        ));
+
+        $this->repository->updateMedia($entity);
+        $this->assertDatabaseCount('medias_video', 1);
+        $this->assertDatabaseHas('medias_video', [
+            'video_id' => $entity->id(),
+            'file_path' => 'test2.mp4',
+            'media_status' => MediaStatus::COMPLETED->value,
+            'encoded_path' => 'test2.xpto',
         ]);
     }
 }
