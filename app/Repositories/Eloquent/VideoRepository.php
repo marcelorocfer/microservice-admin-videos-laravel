@@ -115,11 +115,12 @@ class VideoRepository implements VideoRepositoryInterface
         }
 
         if ($trailer = $entity->trailerFile()) {
-            $entityDB->trailer()->updateOrCreate([
+            $action = $entityDB->trailer()->first() ? 'update' : 'create';
+            $entityDB->trailer()->{$action}([
                 'file_path' => $trailer->filePath,
                 'media_status' => $trailer->mediaStatus->value,
                 'encoded_path' => $trailer->encodedPath,
-                'type' => MediaTypes::VIDEO->value,
+                'type' => MediaTypes::TRAILER->value,
             ]);
         }
 
