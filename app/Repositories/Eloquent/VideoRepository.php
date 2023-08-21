@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\MediaTypes;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
 use Core\Domain\Entity\Entity;
@@ -118,8 +119,11 @@ class VideoRepository implements VideoRepositoryInterface
                 'file_path' => $trailer->filePath,
                 'media_status' => $trailer->mediaStatus->value,
                 'encoded_path' => $trailer->encodedPath,
+                'type' => MediaTypes::VIDEO->value,
             ]);
         }
+
+        return $entity;
     }
 
     protected function syncRelationships(Model $model, Entity $entity)
