@@ -296,7 +296,7 @@ class VideoRepositoryTest extends TestCase
             encodedPath: 'test2.xpto'
         ));
 
-        $this->repository->updateMedia($entity);
+        $entityDB = $this->repository->updateMedia($entity);
         $this->assertDatabaseCount('medias_video', 1);
         $this->assertDatabaseHas('medias_video', [
             'video_id' => $entity->id(),
@@ -304,5 +304,7 @@ class VideoRepositoryTest extends TestCase
             'media_status' => MediaStatus::COMPLETED->value,
             'encoded_path' => 'test2.xpto',
         ]);
+
+        $this->assertNotNull($entityDB->trailerFile());
     }
 }
