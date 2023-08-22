@@ -119,8 +119,8 @@ class VideoRepository implements VideoRepositoryInterface
             throw new NotFoundException('Video not found');
         }
 
+        $this->updateMediaVideo($entity, $objectModel);
         $this->updateMediaTrailer($entity, $objectModel);
-
         $this->updateImageBanner($entity, $objectModel);
 
         return $this->convertObjectToEntity($objectModel);
