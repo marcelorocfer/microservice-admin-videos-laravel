@@ -388,6 +388,6 @@ class VideoRepositoryTest extends TestCase
             'encoded_path' => 'test2.xpto',
         ]);
 
-        // $this->assertNotNull($entityDB->videoFile());
+        $this->assertNotNull($entityDB->videoFile());
     }
 }

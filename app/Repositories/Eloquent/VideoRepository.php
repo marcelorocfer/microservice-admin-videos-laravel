@@ -165,6 +165,14 @@ class VideoRepository implements VideoRepositoryInterface
             ));
         }
 
+        if ($mediaVideo = $model->media) {
+            $entity->setVideoFile(new ValueObjectMedia(
+                filePath: $mediaVideo->file_path,
+                mediaStatus: MediaStatus::from($mediaVideo->media_status),
+                encodedPath: $mediaVideo->encoded_path,
+            ));
+        }
+
         if ($banner = $model->banner) {
             $entity->setBannerFile(new ValueObjectImage(path: $banner->path));
         }
