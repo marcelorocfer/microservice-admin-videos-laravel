@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\ImageTypes;
-use App\Enums\MediaTypes;
 use Core\Domain\Enum\Rating;
 use App\Models\Video as Model;
 use Core\Domain\Entity\Entity;
@@ -12,13 +10,16 @@ use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as VideoEntity;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
+use App\Repositories\Eloquent\Traits\VideoTrait;
 use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\ValueObject\Media as ValueObjectMedia;
 use Core\Domain\ValueObject\Image as ValueObjectImage;
+use Core\Domain\ValueObject\Media as ValueObjectMedia;
 
 class VideoRepository implements VideoRepositoryInterface
 {
+    use VideoTrait;
+
     protected $model;
 
     public function __construct(Model $model)
@@ -114,29 +115,15 @@ class VideoRepository implements VideoRepositoryInterface
 
     public function updateMedia(Entity $entity): Entity
     {
-        if (!$entityDB = $this->model->find($entity->id())) {
+        if (!$objectModel = $this->model->find($entity->id())) {
             throw new NotFoundException('Video not found');
         }
 
-        if ($trailer = $entity->trailerFile()) {
-            $action = $entityDB->trailer()->first() ? 'update' : 'create';
-            $entityDB->trailer()->{$action}([
-                'file_path' => $trailer->filePath,
-                'media_status' => $trailer->mediaStatus->value,
-                'encoded_path' => $trailer->encodedPath,
-                'type' => MediaTypes::TRAILER->value,
-            ]);
-        }
+        $this->updateMediaTrailer($entity, $objectModel);
 
-        if ($banner = $entity->bannerFile()) {
-            $action = $entityDB->banner()->first() ? 'update' : 'create';
-            $entityDB->banner()->{$action}([
-                'path' => $banner->path(),
-                'type' => ImageTypes::BANNER->value,
-            ]);
-        }
+        $this->updateImageBanner($entity, $objectModel);
 
-        return $this->convertObjectToEntity($entityDB);
+        return $this->convertObjectToEntity($objectModel);
     }
 
     protected function syncRelationships(Model $model, Entity $entity)
