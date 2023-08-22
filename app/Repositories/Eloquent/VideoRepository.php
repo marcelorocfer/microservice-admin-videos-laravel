@@ -122,6 +122,7 @@ class VideoRepository implements VideoRepositoryInterface
         $this->updateMediaVideo($entity, $objectModel);
         $this->updateMediaTrailer($entity, $objectModel);
         $this->updateImageBanner($entity, $objectModel);
+        $this->updateImageThumb($entity, $objectModel);
 
         return $this->convertObjectToEntity($objectModel);
     }
@@ -175,6 +176,10 @@ class VideoRepository implements VideoRepositoryInterface
 
         if ($banner = $model->banner) {
             $entity->setBannerFile(new ValueObjectImage(path: $banner->path));
+        }
+
+        if ($thumb = $model->thumb) {
+            $entity->setThumbFile(new ValueObjectImage(path: $thumb->path));
         }
 
         return $entity;
