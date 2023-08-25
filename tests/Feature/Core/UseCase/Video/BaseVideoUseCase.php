@@ -72,15 +72,6 @@ abstract class BaseVideoUseCase extends TestCase
             'error' => $fakeFile->getError(),
         ];
 
-        $input = new CreateInputVideoDTO(
-            title: 'Test Title',
-            description: 'Test Description',
-            yearLaunched: 2028,
-            duration: 120,
-            opened: true,
-            rating: Rating::L,
-        );
-
         $input = $this->inputDTO(
             categories: $categoriesIds,
             genres: $genresIds,
