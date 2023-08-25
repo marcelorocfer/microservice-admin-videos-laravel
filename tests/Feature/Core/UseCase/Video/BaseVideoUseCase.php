@@ -20,8 +20,20 @@ use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
-class CreateVideoUseCaseTest extends TestCase
+abstract class BaseVideoUseCase extends TestCase
 {
+    abstract function useCase(): string;
+    abstract function inputDTO(
+        array $categories = [],
+        array $genres = [],
+        array $castMembers = [],
+        ?array $videoFile = null,
+        ?array $trailerFile = null,
+        ?array $bannerFile = null,
+        ?array $thumbFile = null,
+        ?array $thumbHalf = null,
+    ): object;
+
     /**
      * @dataProvider provider
      */
@@ -35,7 +47,7 @@ class CreateVideoUseCaseTest extends TestCase
         bool $withThumbHalf = false,
         bool $withBanner = false,
     ) {
-        $useCase = new CreateVideoUseCase(
+        $useCase = new ($this->useCase())(
             $this->app->make(VideoRepositoryInterface::class),
             $this->app->make(TransactionInterface::class),
             // $this->app->make(FileStorageInterface::class),
@@ -67,6 +79,9 @@ class CreateVideoUseCaseTest extends TestCase
             duration: 120,
             opened: true,
             rating: Rating::L,
+        );
+
+        $input = $this->inputDTO(
             categories: $categoriesIds,
             genres: $genresIds,
             castMembers: $castMembersIds,
