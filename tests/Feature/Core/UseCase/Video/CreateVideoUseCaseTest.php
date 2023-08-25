@@ -7,6 +7,7 @@ use App\Models\Genre;
 use App\Models\Category;
 use App\Models\CastMember;
 use Core\Domain\Enum\Rating;
+use Tests\Stubs\VideoEventStub;
 use Tests\Stubs\UploadFilesStub;
 use Illuminate\Http\UploadedFile;
 use Core\UseCase\Interfaces\FileStorageInterface;
@@ -39,7 +40,8 @@ class CreateVideoUseCaseTest extends TestCase
             $this->app->make(TransactionInterface::class),
             // $this->app->make(FileStorageInterface::class),
             new UploadFilesStub(),
-            $this->app->make(VideoEventManagerInterface::class),
+            // $this->app->make(VideoEventManagerInterface::class),
+            new VideoEventStub(),
 
             $this->app->make(CategoryRepositoryInterface::class),
             $this->app->make(GenreRepositoryInterface::class),
