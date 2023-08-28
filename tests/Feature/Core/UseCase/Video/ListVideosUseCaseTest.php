@@ -10,9 +10,15 @@ use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
 
 class ListVideosUseCaseTest extends TestCase
 {
-    public function test_pagination()
+    /**
+     * @dataProvider provider
+     */
+    public function test_pagination(
+        int $total,
+        int $perPage,
+    )
     {
-        $video = Video::factory()->count(30)->create();
+        Video::factory()->count($total)->create();
 
         $useCase = new ListVideosUseCase(
             $this->app->make(VideoRepositoryInterface::class)
@@ -22,10 +28,24 @@ class ListVideosUseCaseTest extends TestCase
             filter: '',
             order: 'DESC',
             page: 1,
-            per_page: 10
+            per_page: $perPage
         ));
 
-        $this->assertCount(10, $response->items);
-        $this->assertEquals(30, $response->total);
+        $this->assertCount($perPage, $response->items);
+        $this->assertEquals($total, $response->total);
+    }
+
+    protected function provider(): array
+    {
+        return [
+            [
+                'total' => 30,
+                'perPage' => 10,
+            ],
+            [
+                'total' => 20,
+                'perPage' => 5,
+            ],
+        ];
     }
 }
