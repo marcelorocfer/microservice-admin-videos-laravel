@@ -13,6 +13,7 @@ class UploadFilesStub implements FileStorageInterface
      */
     public function store(string $path, array $file): string
     {
+        event($this);
         return "{$path}/test.mp4";
     }
 

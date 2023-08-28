@@ -5,6 +5,7 @@ namespace Tests\Feature\Core\UseCase\Video;
 use Exception;
 use Throwable;
 use Core\Domain\Enum\Rating;
+use Tests\Stubs\UploadFilesStub;
 use Illuminate\Support\Facades\Event;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Illuminate\Database\Events\TransactionBeginning;
@@ -62,5 +63,29 @@ class CreateVideoUseCaseTest  extends BaseVideoUseCase
         } catch (Throwable $th) {
             $this->assertDatabaseCount('videos', 0);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function uploadFilesException()
+    {
+        Event::listen(UploadFilesStub::class, function () {
+
+        });
+        
+        $stu = $this->makeStu();
+        $input = $this->inputDTO(
+            videoFile: [
+                'name' => 'video.mp4',
+                'type' => 'video/mp4',
+                'tmp_name' => '/tmp/video.mp4',
+                'error' => 0,
+            ]
+        );
+
+        $stu->exec($input);
+
+        $this->assertDatabaseCount('videos', 0);
     }
 }
