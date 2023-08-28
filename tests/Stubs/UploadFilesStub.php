@@ -6,6 +6,11 @@ use Core\UseCase\Interfaces\FileStorageInterface;
 
 class UploadFilesStub implements FileStorageInterface
 {
+    public function __construct()
+    {
+        event($this);
+    }
+
     /**
      * @param string $path
      * @param array $file
@@ -13,7 +18,6 @@ class UploadFilesStub implements FileStorageInterface
      */
     public function store(string $path, array $file): string
     {
-        event($this);
         return "{$path}/test.mp4";
     }
 

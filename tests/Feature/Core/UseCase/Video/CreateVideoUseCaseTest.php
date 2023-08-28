@@ -71,21 +71,25 @@ class CreateVideoUseCaseTest  extends BaseVideoUseCase
     public function uploadFilesException()
     {
         Event::listen(UploadFilesStub::class, function () {
-
+            throw new Exception('upload files');
         });
-        
-        $stu = $this->makeStu();
-        $input = $this->inputDTO(
-            videoFile: [
-                'name' => 'video.mp4',
-                'type' => 'video/mp4',
-                'tmp_name' => '/tmp/video.mp4',
-                'error' => 0,
-            ]
-        );
 
-        $stu->exec($input);
+        try {
+            $stu = $this->makeStu();
+            $input = $this->inputDTO(
+                videoFile: [
+                    'name' => 'video.mp4',
+                    'type' => 'video/mp4',
+                    'tmp_name' => '/tmp/video.mp4',
+                    'error' => 0,
+                ]
+            );
+            $stu->exec($input);
 
-        $this->assertDatabaseCount('videos', 0);
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
+
     }
 }
