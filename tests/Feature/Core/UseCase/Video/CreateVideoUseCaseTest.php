@@ -2,8 +2,12 @@
 
 namespace Tests\Feature\Core\UseCase\Video;
 
+use Exception;
+use Throwable;
 use Core\Domain\Enum\Rating;
+use Illuminate\Support\Facades\Event;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Illuminate\Database\Events\TransactionBeginning;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 
 class CreateVideoUseCaseTest  extends BaseVideoUseCase
@@ -39,5 +43,24 @@ class CreateVideoUseCaseTest  extends BaseVideoUseCase
             thumbFile: $thumbFile,
             thumbHalf: $thumbHalf,
         );
+    }
+
+    /**
+     * @test
+     */
+    public function transactionException()
+    {
+        Event::listen(TransactionBeginning::class, function () {
+            throw new Exception('begin transaction');
+        });
+
+        try {
+            $stu = $this->makeStu();
+            $stu->exec($this->inputDTO());
+
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
     }
 }
