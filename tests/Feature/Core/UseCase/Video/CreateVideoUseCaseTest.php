@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Illuminate\Database\Events\TransactionBeginning;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Tests\Stubs\VideoEventStub;
 
 class CreateVideoUseCaseTest  extends BaseVideoUseCase
 {
@@ -90,6 +91,32 @@ class CreateVideoUseCaseTest  extends BaseVideoUseCase
         } catch (Throwable $th) {
             $this->assertDatabaseCount('videos', 0);
         }
+    }
 
+    /**
+     * @test
+     */
+    public function eventException()
+    {
+        Event::listen(VideoEventStub::class, function () {
+            throw new Exception('event');
+        });
+
+        try {
+            $stu = $this->makeStu();
+            $input = $this->inputDTO(
+                trailerFile: [
+                    'name' => 'video.mp4',
+                    'type' => 'video/mp4',
+                    'tmp_name' => '/tmp/video.mp4',
+                    'error' => 0,
+                ]
+            );
+            $stu->exec($input);
+
+            $this->assertTrue(false);
+        } catch (\Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
     }
 }

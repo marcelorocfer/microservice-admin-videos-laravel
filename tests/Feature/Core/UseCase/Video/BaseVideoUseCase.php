@@ -10,15 +10,11 @@ use Core\Domain\Enum\Rating;
 use Tests\Stubs\VideoEventStub;
 use Tests\Stubs\UploadFilesStub;
 use Illuminate\Http\UploadedFile;
-use Core\UseCase\Interfaces\FileStorageInterface;
 use Core\UseCase\Interfaces\TransactionInterface;
-use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 abstract class BaseVideoUseCase extends TestCase
 {
