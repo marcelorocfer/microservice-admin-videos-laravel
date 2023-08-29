@@ -2,17 +2,20 @@
 
 namespace Tests\Feature\Core\UseCase\Video;
 
+use Exception;
+use Throwable;
 use Tests\TestCase;
 use App\Models\Genre;
 use App\Models\Category;
 use App\Models\CastMember;
-use Core\Domain\Enum\Rating;
 use Tests\Stubs\VideoEventStub;
 use Tests\Stubs\UploadFilesStub;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
+use Illuminate\Database\Events\TransactionBeginning;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 
@@ -146,5 +149,78 @@ abstract class BaseVideoUseCase extends TestCase
             $this->app->make(GenreRepositoryInterface::class),
             $this->app->make(CastMemberRepositoryInterface::class),
         );
+    }
+
+    /**
+     * @test
+     */
+    public function transactionException()
+    {
+        Event::listen(TransactionBeginning::class, function () {
+            throw new Exception('begin transaction');
+        });
+
+        try {
+            $stu = $this->makeStu();
+            $stu->exec($this->inputDTO());
+
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function uploadFilesException()
+    {
+        Event::listen(UploadFilesStub::class, function () {
+            throw new Exception('upload files');
+        });
+
+        try {
+            $stu = $this->makeStu();
+            $input = $this->inputDTO(
+                videoFile: [
+                    'name' => 'video.mp4',
+                    'type' => 'video/mp4',
+                    'tmp_name' => '/tmp/video.mp4',
+                    'error' => 0,
+                ]
+            );
+            $stu->exec($input);
+
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function eventException()
+    {
+        Event::listen(VideoEventStub::class, function () {
+            throw new Exception('event');
+        });
+
+        try {
+            $stu = $this->makeStu();
+            $input = $this->inputDTO(
+                trailerFile: [
+                    'name' => 'video.mp4',
+                    'type' => 'video/mp4',
+                    'tmp_name' => '/tmp/video.mp4',
+                    'error' => 0,
+                ]
+            );
+            $stu->exec($input);
+
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
     }
 }
