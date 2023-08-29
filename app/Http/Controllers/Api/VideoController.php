@@ -2,12 +2,36 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\VideoResource;
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
+use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
 
 class VideoController extends Controller
 {
-    public function index()
+    public function index(Request $request, ListVideosUseCase $useCase)
     {
-        return response()->json([]);
+        $response = $useCase->exec(
+            input: new PaginateInputVideoDTO(
+                filter: $request->get('filter', ''),
+                order: $request->get('order', 'DESC'),
+                page: (int) $request->get('page', 1),
+                per_page: (int) $request->get('total_page', 15),
+            )
+        );
+
+        return VideoResource::collection(collect($response->items))
+                                ->additional([
+                                    'meta' => [
+                                        'total' => $response->total,
+                                        'current_page' => $response->current_page,
+                                        'last_page' => $response->last_page,
+                                        'first_page' => $response->first_page,
+                                        'per_page' => $response->per_page,
+                                        'to' => $response->to,
+                                        'from' => $response->from,
+                                    ]
+                                ]);
     }
 }
