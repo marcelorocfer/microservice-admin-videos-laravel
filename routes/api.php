@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\{
-    GenreController,
-    CategoryController,
-    CastMemberController,
-};
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\GenreController;
+use App\Http\Controllers\Api\VideoController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CastMemberController;
+
+Route::apiResource('/videos', VideoController::class);
 
 Route::apiResource('/categories', CategoryController::class);
 Route::apiResource(
