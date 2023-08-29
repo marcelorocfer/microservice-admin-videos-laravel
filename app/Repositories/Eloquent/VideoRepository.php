@@ -74,6 +74,13 @@ class VideoRepository implements VideoRepositoryInterface
                                 $query->where('title', 'LIKE', "%{$filter}%");
                             }
                         })
+                        ->with([
+                            'media',
+                            'trailer',
+                            'banner',
+                            'thumb',
+                            'thumbHalf'
+                        ])
                         ->orderBy('title', $order)
                         ->paginate($totalPage, ['*'], 'page', $page);
 
