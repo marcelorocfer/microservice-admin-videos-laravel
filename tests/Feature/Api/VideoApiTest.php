@@ -4,7 +4,6 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 use App\Models\Video;
-use Illuminate\Http\Response;
 
 class VideoApiTest extends TestCase
 {
@@ -17,7 +16,7 @@ class VideoApiTest extends TestCase
     {
         $response = $this->getJson($this->endpoint);
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
     }
 
     /**
@@ -29,8 +28,10 @@ class VideoApiTest extends TestCase
 
         $response = $this->getJson($this->endpoint);
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
         $response->assertJsonCount(15, 'data');
+        $response->assertJsonPath('meta.per_page', 15);
+        $response->assertJsonPath('meta.current_page', 1);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
