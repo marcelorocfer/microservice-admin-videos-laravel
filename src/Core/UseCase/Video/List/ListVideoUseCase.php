@@ -24,6 +24,7 @@ class ListVideoUseCase
             duration: $entity->duration,
             opened: $entity->opened,
             rating: $entity->rating,
+            createdAt: $entity->created_at(),
             categories: $entity->categorieIds,
             genres: $entity->genreIds,
             castMembers: $entity->castMemberIds,
