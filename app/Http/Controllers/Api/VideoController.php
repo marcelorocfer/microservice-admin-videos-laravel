@@ -17,7 +17,7 @@ class VideoController extends Controller
                 filter: $request->get('filter', ''),
                 order: $request->get('order', 'DESC'),
                 page: (int) $request->get('page', 1),
-                per_page: (int) $request->get('total_page', 15),
+                per_page: (int) $request->get('per_page', 15),
             )
         );
 

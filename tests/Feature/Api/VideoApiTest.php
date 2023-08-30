@@ -31,12 +31,18 @@ class VideoApiTest extends TestCase
     ) {
         Video::factory()->count($total)->create();
 
-        $response = $this->getJson("$this->endpoint?page=$page");
+        $params = http_build_query([
+            'page' => $page,
+            'per_page' => $perPage,
+            'order' => 'DESC',
+        ]);
+
+        $response = $this->getJson("$this->endpoint?$params");
 
         $response->assertOk();
         $response->assertJsonCount($totalCurrentPage, 'data');
-        $response->assertJsonPath('meta.per_page', $perPage);
         $response->assertJsonPath('meta.current_page', $page);
+        $response->assertJsonPath('meta.per_page', $perPage);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
@@ -82,6 +88,12 @@ class VideoApiTest extends TestCase
                 'totalCurrentPage' => 5,
                 'page' => 2,
                 'perPage' => 15,
+            ],
+            'test page four' => [
+                'total' => 40,
+                'totalCurrentPage' => 10,
+                'page' => 4,
+                'perPage' => 10,
             ],
         ];
     }
