@@ -156,7 +156,13 @@ class VideoApiTest extends TestCase
 
         $response = $this->postJson($this->endpoint, $data);
         $response->assertCreated();
+        $response->assertJsonStructure([
+            'data' => $this->serializeFields
+        ]);
 
-        $this->assertDatabaseCount('videos', 1);
+        // $this->assertDatabaseCount('videos', 1);
+        $this->assertDatabaseHas('videos', [
+            'id' => $response->json('data.id'),
+        ]);
     }
 }
