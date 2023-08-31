@@ -136,4 +136,27 @@ class VideoApiTest extends TestCase
         $response = $this->getJson("$this->endpoint/fake_id");
         $response->assertNotFound();
     }
+
+    /**
+     * @test
+     */
+    public function store()
+    {
+        $data = [
+            'title' => 'test title',
+            'description' => 'test description',
+            'year_launched' => 2000,
+            'duration' => 1,
+            'rating' => 'L',
+            'opened' => true,
+            'categories' => [],
+            'genres' => [],
+            'cast_members' => [],
+        ];
+
+        $response = $this->postJson($this->endpoint, $data);
+        $response->assertCreated();
+
+        $this->assertDatabaseCount('videos', 1);
+    }
 }
