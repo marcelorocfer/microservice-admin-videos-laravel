@@ -8,11 +8,14 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VideoResource;
 use App\Http\Requests\StoreVideoRequest;
+use App\Http\Requests\UpdateVideoRequest;
 use Core\UseCase\Video\List\ListVideoUseCase;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\List\DTO\ListInputVideoUseCase;
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
 
 class VideoController extends Controller
@@ -121,5 +124,76 @@ class VideoController extends Controller
         return (new VideoResource($response))
                 ->response()
                 ->setStatusCode(Response::HTTP_CREATED);
+    }
+
+
+
+    public function update(UpdateVideoUseCase $useCase, UpdateVideoRequest $request, $id)
+    {
+        if ($file = $request->file('video_file')) {
+            $videoFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        if ($file = $request->file('trailer_file')) {
+            $trailerFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        if ($file = $request->file('banner_file')) {
+            $bannerFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        if ($file = $request->file('thumb_file')) {
+            $thumbFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        if ($file = $request->file('thumb_half_file')) {
+            $thumbHalfFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        $response = $useCase->exec(new UpdateInputVideoDTO(
+            id: $id,
+            title: $request->title,
+            description: $request->description,
+            categories: $request->categories,
+            genres: $request->genres,
+            castMembers: $request->cast_members,
+            videoFile: $videoFile ?? null,
+            trailerFile: $trailerFile ?? null,
+            bannerFile: $bannerFile ?? null,
+            thumbFile: $thumbFile ?? null,
+            thumbHalf: $thumbHalfFile ?? null,
+        ));
+
+        return new VideoResource($response);
     }
 }
