@@ -183,4 +183,25 @@ class VideoApiTest extends TestCase
 
         Storage::deleteDirectory($response->json('data.id'));
     }
+
+    /**
+     * @test
+     */
+    public function storeValidation()
+    {
+        $response = $this->postJson($this->endpoint, []);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors([
+            'title',
+            'description',
+            'year_launched',
+            'duration',
+            'rating',
+            'opened',
+            'categories',
+            'genres',
+            'cast_members',
+        ]);
+    }
 }
