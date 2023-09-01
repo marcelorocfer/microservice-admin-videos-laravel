@@ -50,8 +50,18 @@ class VideoController extends Controller
 
     public function store(CreateVideoUseCase $useCase, Request $request)
     {
-        if ($file = $request->file('video_file')) {
+        if ($file = $request->file('video')) {
             $videoFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'size' => $file->getSize(),
+                'error' => $file->getError(),
+                'type' => $file->getType(),
+            ];
+        }
+
+        if ($file = $request->file('trailer')) {
+            $trailerFile = [
                 'name' => $file->getClientOriginalName(),
                 'tmp_name' => $file->getPathname(),
                 'size' => $file->getSize(),
@@ -71,6 +81,7 @@ class VideoController extends Controller
             genres: $request->genres,
             castMembers: $request->cast_members,
             videoFile: $videoFile ?? null,
+            trailerFile: $trailerFile ?? null,
         ));
 
         return (new VideoResource($response))
