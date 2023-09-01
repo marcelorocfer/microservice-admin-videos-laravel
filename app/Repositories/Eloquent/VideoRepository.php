@@ -14,8 +14,6 @@ use App\Repositories\Eloquent\Traits\VideoTrait;
 use Core\Domain\Builder\Video\UpdateVideoBuilder;
 use App\Repositories\Presenters\PaginationPresenter;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\ValueObject\Image as ValueObjectImage;
-use Core\Domain\ValueObject\Media as ValueObjectMedia;
 
 class VideoRepository implements VideoRepositoryInterface
 {
@@ -79,7 +77,10 @@ class VideoRepository implements VideoRepositoryInterface
                             'trailer',
                             'banner',
                             'thumb',
-                            'thumbHalf'
+                            'thumbHalf',
+                            'categories',
+                            'genres',
+                            'castMembers',
                         ])
                         ->orderBy('title', $order)
                         ->paginate($totalPage, ['*'], 'page', $page);
