@@ -3,7 +3,10 @@
 namespace Tests\Feature\Api;
 
 use Tests\TestCase;
+use App\Models\Genre;
 use App\Models\Video;
+use App\Models\Category;
+use App\Models\CastMember;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -147,6 +150,10 @@ class VideoApiTest extends TestCase
         $mediaVideoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
         $imageVideoFile = UploadedFile::fake()->image('image.png');
 
+        $categoriesIds = Category::factory()->count(3)->create()->pluck('id')->toArray();
+        $genresIds = Genre::factory()->count(3)->create()->pluck('id')->toArray();
+        $castMembersIds = CastMember::factory()->count(3)->create()->pluck('id')->toArray();
+
         $data = [
             'title' => 'test title',
             'description' => 'test description',
@@ -154,9 +161,9 @@ class VideoApiTest extends TestCase
             'duration' => 1,
             'rating' => 'L',
             'opened' => true,
-            'categories' => [],
-            'genres' => [],
-            'cast_members' => [],
+            'categories' => $categoriesIds,
+            'genres' => $genresIds,
+            'cast_members' => $castMembersIds,
             'video_file' => $mediaVideoFile,
             'trailer_file' => $mediaVideoFile,
             'banner_file' => $imageVideoFile,
