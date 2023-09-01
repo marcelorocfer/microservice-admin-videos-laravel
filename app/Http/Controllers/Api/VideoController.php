@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VideoResource;
+use App\Http\Requests\StoreVideoRequest;
 use Core\UseCase\Video\List\ListVideoUseCase;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\UseCase\Video\Paginate\ListVideosUseCase;
@@ -48,7 +49,7 @@ class VideoController extends Controller
         return new VideoResource($response);
     }
 
-    public function store(CreateVideoUseCase $useCase, Request $request)
+    public function store(CreateVideoUseCase $useCase, StoreVideoRequest $request)
     {
         if ($file = $request->file('video_file')) {
             $videoFile = [
