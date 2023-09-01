@@ -11,9 +11,11 @@ use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
 use Core\UseCase\Video\List\ListVideoUseCase;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Core\UseCase\Video\Delete\DeleteVideoUseCase;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Core\UseCase\Video\Delete\DTO\DeleteInputVideoDTO;
 use Core\UseCase\Video\List\DTO\ListInputVideoUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Paginate\DTO\PaginateInputVideoDTO;
@@ -195,5 +197,12 @@ class VideoController extends Controller
         ));
 
         return new VideoResource($response);
+    }
+
+    public function destroy(DeleteVideoUseCase $useCase, $id)
+    {
+        $useCase->exec(new DeleteInputVideoDTO(id: $id));
+
+        return response()->noContent();
     }
 }
