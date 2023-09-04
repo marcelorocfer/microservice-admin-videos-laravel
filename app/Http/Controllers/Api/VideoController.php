@@ -113,9 +113,7 @@ class VideoController extends Controller
             thumbHalf: $thumbHalfFile ?? null,
         ));
 
-        return (new VideoResource($response))
-                ->response()
-                ->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response, Response::HTTP_CREATED);
     }
 
 
@@ -186,7 +184,7 @@ class VideoController extends Controller
             thumbHalf: $thumbHalfFile ?? null,
         ));
 
-        return new VideoResource($response);
+        return ApiAdapter::json($response);
     }
 
     public function destroy(DeleteVideoUseCase $useCase, $id)
