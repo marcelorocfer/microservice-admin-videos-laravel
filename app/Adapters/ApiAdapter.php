@@ -26,4 +26,9 @@ class ApiAdapter
                                     ]
                                 ]);
     }
+
+    public static function json(object $data)
+    {
+        return new DefaultResource($data);
+    }
 }
