@@ -2,6 +2,7 @@
 
 namespace App\Adapters;
 
+use App\Http\Resources\DefaultResource;
 use Core\Domain\Repository\PaginationInterface;
 
 class ApiAdapter
@@ -12,7 +13,7 @@ class ApiAdapter
 
     public function toJson()
     {
-        return DefaultResource::collection(collect($this->response->items()))
+        return DefaultResource::collection($this->response->items())
                                 ->additional([
                                     'meta' => [
                                         'total' => $this->response->total(),
