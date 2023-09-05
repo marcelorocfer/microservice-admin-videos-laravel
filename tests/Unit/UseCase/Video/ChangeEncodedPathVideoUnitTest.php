@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Video as Entity;
 use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
 use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Video\DTO\ChangeEncodedVideoOutputDTO;
 use Core\UseCase\Video\ChangeEncoded\ChangeEncodedPathVideo;
 
 class ChangeEncodedPathVideoUnitTest extends TestCase
@@ -25,12 +26,16 @@ class ChangeEncodedPathVideoUnitTest extends TestCase
                         ->times(1)
                         ->with($input->id)
                         ->andReturn($this->getEntity());
+        $mockRepository->shouldReceive('updateMedia')
+                        ->times(1);
 
         $useCase = new ChangeEncodedPathVideo(
             repository: $mockRepository
         );
 
-        $useCase->exec(input: $input);
+        $response = $useCase->exec(input: $input);
+
+        $this->assertInstanceOf(ChangeEncodedVideoOutputDTO::class, $response);
 
         Mockery::close();
     }
