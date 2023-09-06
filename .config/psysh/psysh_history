@@ -1,3 +1,6 @@
 \App\Models\Video::factory()->count(10)->create();
 \App\Models\Video::factory()->count(10)->create();
 exit
+\App\Models\Category::factory()->create();
+\App\Models\Genre::factory()->create();
+\App\Models\CastMember::factory()->create();
