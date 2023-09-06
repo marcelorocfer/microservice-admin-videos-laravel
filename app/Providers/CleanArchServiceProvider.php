@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\VideoEvent;
+use App\Services\AMQP\AMQPInterface;
+use App\Services\AMQP\PhpAmqpService;
 use App\Services\Storage\FileStorage;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GenreRepository;
@@ -42,10 +44,17 @@ class CleanArchServiceProvider extends ServiceProvider
         /**
          * DB Transaction
          */
-
         $this->app->bind(
             TransactionInterface::class,
             DBTransaction::class
+        );
+
+        /**
+         * Services
+         */
+        $this->app->bind(
+            AMQPInterface::class,
+            PhpAmqpService::class
         );
     }
 
