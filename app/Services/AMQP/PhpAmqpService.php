@@ -12,7 +12,7 @@ class PhpAmqpService implements AMQPInterface
     protected $connection = null;
     protected $channel = null;
 
-    public function producer(string $queue, array $payload, string $exchange): void
+    public function __construct()
     {
         if ($this->connection) {
             return;
@@ -30,6 +30,11 @@ class PhpAmqpService implements AMQPInterface
         $this->channel = $this->connection->channel();
     }
 
+    public function producer(string $queue, array $payload, string $exchange): void
+    {
+
+    }
+
     public function producerFanout(array $payload, string $exchange): void
     {
         $this->channel->exchange_declare(
@@ -45,7 +50,7 @@ class PhpAmqpService implements AMQPInterface
         ]);
 
         $this->channel->basic_publish($message);
-        
+
         $this->closeChannel();
         $this->closeConnection();
     }
