@@ -12,9 +12,9 @@ class PhpAmqpService implements AMQPInterface
     protected $connection = null;
     protected $channel = null;
 
-    public function __construct()
+    public function connect()
     {
-        if ($this->connection || app()->runningInConsole()) {
+        if ($this->connection) {
             return;
         }
 
