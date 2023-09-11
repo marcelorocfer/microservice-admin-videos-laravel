@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'queue_name' => env('RABBITMQ_QUEUE'),
+    'queue_name' => env('micro_catalog'),
 
     'rabbitmq' => [
         'hosts' => [
@@ -14,7 +14,7 @@ return [
             ],
         ],
     ],
-    
+
     'micro_encoder_go' => [
         'exchange' => 'dlx',
         'queue_name' => 'video',
