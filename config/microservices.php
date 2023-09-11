@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'queue_name' => env('micro_catalog'),
+    'queue_name' => env('RABBITMQ_QUEUE'),
 
     'rabbitmq' => [
         'hosts' => [
