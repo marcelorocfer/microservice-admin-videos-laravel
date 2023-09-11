@@ -12,7 +12,7 @@ class PhpAmqpService implements AMQPInterface
     protected $connection = null;
     protected $channel = null;
 
-    public function connect()
+    private function connect(): void
     {
         if ($this->connection) {
             return;
@@ -32,6 +32,8 @@ class PhpAmqpService implements AMQPInterface
 
     public function producer(string $queue, array $payload, string $exchange): void
     {
+        $this->connect();
+
         $this->channel->queue_declare($queue, false, true, false, false);
         $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
         $this->channel->queue_bind($queue, $exchange);
@@ -45,6 +47,8 @@ class PhpAmqpService implements AMQPInterface
 
     public function producerFanout(array $payload, string $exchange): void
     {
+        $this->connect();
+
         $this->channel->exchange_declare(
             exchange: $exchange,
             type: AMQPExchangeType::FANOUT,
@@ -65,6 +69,8 @@ class PhpAmqpService implements AMQPInterface
 
     public function consumer(string $queue, string $exchange, Closure $callback): void
     {
+        $this->connect();
+
         $this->channel->queue_declare(
             queue: $queue,
             durable: true,

@@ -53,7 +53,7 @@ class RabbitMQCommand extends Command
             }
         };
 
-        $this->amqp->connect()->consumer(
+        $this->amqp->consumer(
             queue: config('microservices.queue_name'),
             exchange: config('microservices.micro_encoder_go.exchange_producer'),
             callback: $closure
