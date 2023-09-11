@@ -12,24 +12,6 @@ class PhpAmqpService implements AMQPInterface
     protected $connection = null;
     protected $channel = null;
 
-    private function connect(): void
-    {
-        if ($this->connection) {
-            return;
-        }
-
-        $configs = config('microservices.rabbitmq.hosts')[0];
-        $this->connection = new AMQPStreamConnection(
-            host: $configs['host'],
-            port: $configs['port'],
-            user: $configs['user'],
-            password: $configs['password'],
-            vhost: $configs['vhost'],
-        );
-
-        $this->channel = $this->connection->channel();
-    }
-
     public function producer(string $queue, array $payload, string $exchange): void
     {
         $this->connect();
@@ -104,5 +86,23 @@ class PhpAmqpService implements AMQPInterface
     private function closeConnection(): void
     {
         $this->connection->close();
+    }
+
+    private function connect(): void
+    {
+        if ($this->connection) {
+            return;
+        }
+
+        $configs = config('microservices.rabbitmq.hosts')[0];
+        $this->connection = new AMQPStreamConnection(
+            host: $configs['host'],
+            port: $configs['port'],
+            user: $configs['user'],
+            password: $configs['password'],
+            vhost: $configs['vhost'],
+        );
+
+        $this->channel = $this->connection->channel();
     }
 }
