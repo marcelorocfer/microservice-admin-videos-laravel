@@ -6,6 +6,12 @@ use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CastMemberController;
 
+Route::middleware(['auth.api'])->group(function () {
+    Route::get('/me', function () {
+        return true;
+    });
+});
+
 Route::apiResource('/videos', VideoController::class);
 
 Route::apiResource('/categories', CategoryController::class);
