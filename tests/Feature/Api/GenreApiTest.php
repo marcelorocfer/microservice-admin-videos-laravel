@@ -5,10 +5,13 @@ namespace Tests\Feature\Api;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use App\Models\Genre as Model;
+use Tests\Traits\WithoutMiddlewareTrait;
 use App\Models\Category as CategoryModel;
 
 class GenreApiTest extends TestCase
 {
+    use WithoutMiddlewareTrait;
+
     protected $endpoint = '/api/genres';
 
     public function test_index_empty()

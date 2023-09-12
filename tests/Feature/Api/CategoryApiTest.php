@@ -5,9 +5,12 @@ namespace Tests\Feature\Api;
 use Tests\TestCase;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Tests\Traits\WithoutMiddlewareTrait;
 
 class CategoryApiTest extends TestCase
 {
+    use WithoutMiddlewareTrait;
+    
     protected $endpoint = '/api/categories';
 
     public function test_list_empty_categories()
@@ -32,7 +35,7 @@ class CategoryApiTest extends TestCase
                 'current_page',
                 'first_page',
                 'per_page',
-                'to', 
+                'to',
                 'from'
             ]
         ]);
@@ -74,7 +77,7 @@ class CategoryApiTest extends TestCase
         $this->assertEquals($category->id, $response['data']['id']);
     }
 
-    public function test_validations_store() 
+    public function test_validations_store()
     {
         $data = [];
         $response = $this->postJson($this->endpoint, $data);
@@ -135,7 +138,7 @@ class CategoryApiTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->putJson("{$this->endpoint}/{$category->id}", []);
-        
+
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
@@ -154,7 +157,7 @@ class CategoryApiTest extends TestCase
         ];
 
         $response = $this->putJson("{$this->endpoint}/{$category->id}", $data);
-        
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'data' => [

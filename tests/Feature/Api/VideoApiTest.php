@@ -9,9 +9,12 @@ use App\Models\Category;
 use App\Models\CastMember;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\Traits\WithoutMiddlewareTrait;
 
 class VideoApiTest extends TestCase
 {
+    use WithoutMiddlewareTrait;
+
     protected $endpoint = 'api/videos';
     protected $serializeFields = [
         'id',
