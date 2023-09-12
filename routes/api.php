@@ -6,9 +6,9 @@ use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CastMemberController;
 
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth:api', 'can:admin-catalog'])->group(function () {
     Route::get('/me', function () {
-        return true;
+        return 'success';
     });
 });
 
