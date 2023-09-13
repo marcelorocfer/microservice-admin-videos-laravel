@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\AMQP\AMQPInterface;
 use Core\UseCase\Video\ChangeEncoded\ChangeEncodedPathVideo;
 use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
+use Illuminate\Console\Command;
 
 class RabbitMQCommand extends Command
 {
@@ -37,11 +37,11 @@ class RabbitMQCommand extends Command
      */
     public function handle()
     {
-        $closure = function($message) {
+        $closure = function ($message) {
             $body = json_decode($message->body);
 
             if (isset($body->Error) && $body->Error === '') {
-                $encodedPath = $body->video->encoded_video_folder . '/stream.mpd';
+                $encodedPath = $body->video->encoded_video_folder.'/stream.mpd';
                 $videoId = $body->video->resource_id;
 
                 $this->useCase->exec(

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use DateTime;
-use PHPUnit\Framework\TestCase;
-use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\CastMember;
-use Ramsey\Uuid\Uuid as RamseyUuid;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Exceptions\EntityValidationException;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class CastMemberUnitTest extends TestCase
 {

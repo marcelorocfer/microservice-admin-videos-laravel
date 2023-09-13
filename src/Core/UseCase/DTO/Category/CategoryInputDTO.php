@@ -6,8 +6,7 @@ class CategoryInputDTO
 {
     public function __construct(
         public string $id = '',
-    )
-    {
+    ) {
 
     }
 }

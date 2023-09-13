@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use DateTime;
 use Core\Domain\Entity\Genre;
-use PHPUnit\Framework\TestCase;
-use Core\Domain\ValueObject\Uuid;
-use Ramsey\Uuid\Uuid as RamseyUuid;
 use Core\Domain\Exceptions\EntityValidationException;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class GenreUnitTest extends TestCase
 {
@@ -49,9 +49,9 @@ class GenreUnitTest extends TestCase
         );
 
         $this->assertFalse($genre->is_active);
-        
+
         $genre->activate();
-        
+
         $this->assertTrue($genre->is_active);
     }
 
@@ -75,7 +75,7 @@ class GenreUnitTest extends TestCase
         );
 
         $this->assertEquals('test', $genre->name);
-        
+
         $genre->update(
             name: 'Name updated'
         );
@@ -95,7 +95,7 @@ class GenreUnitTest extends TestCase
     public function testEntityUpdateException()
     {
         $this->expectException(EntityValidationException::class);
-        
+
         $uuid = (string) RamseyUuid::uuid4();
         $date = date('Y-m-d H:i:s');
 

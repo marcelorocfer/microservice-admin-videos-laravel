@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Genre;
 
-use Tests\TestCase;
 use App\Models\Genre as Model;
+use App\Repositories\Eloquent\GenreRepository;
 use Core\UseCase\DTO\Genre\GenreInputDTO;
 use Core\UseCase\Genre\DeleteGenreUseCase;
-use App\Repositories\Eloquent\GenreRepository;
+use Tests\TestCase;
 
 class DeleteGenreUseCaseTest extends TestCase
 {
@@ -24,7 +24,7 @@ class DeleteGenreUseCaseTest extends TestCase
 
         $this->assertTrue($response->success);
         $this->assertSoftDeleted('genres', [
-            'id' => $genre->id
+            'id' => $genre->id,
         ]);
     }
 }

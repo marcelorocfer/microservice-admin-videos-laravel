@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
-use DateTime;
-use Tests\TestCase;
 use App\Models\Category;
 use App\Models\Genre as Model;
-use Core\Domain\ValueObject\Uuid;
+use App\Repositories\Eloquent\GenreRepository;
 use Core\Domain\Entity\Genre as Entity;
 use Core\Domain\Exceptions\NotFoundException;
-use App\Repositories\Eloquent\GenreRepository;
 use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 use Ramsey\Uuid\Uuid as RamseyUuid;
+use Tests\TestCase;
 
 class GenreRepositoryTest extends TestCase
 {
@@ -21,13 +21,13 @@ class GenreRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->repository = new GenreRepository(new Model());
-    }  
+    }
 
     public function testImplementsInterface()
     {
         $this->assertInstanceOf(GenreRepositoryInterface::class, $this->repository);
     }
-    
+
     public function testInsert()
     {
         $entity = new Entity(name: 'New genre');
@@ -36,20 +36,20 @@ class GenreRepositoryTest extends TestCase
         $this->assertEquals($entity->id, $response->id);
         $this->assertEquals($entity->name, $response->name);
         $this->assertDatabaseHas('genres', [
-            'id' => $entity->id()
+            'id' => $entity->id(),
         ]);
     }
-    
+
     public function testInsertDeactivate()
     {
         $entity = new Entity(name: 'New genre');
         $entity->deactivate();
 
         $this->repository->insert($entity);
-        
+
         $this->assertDatabaseHas('genres', [
             'id' => $entity->id(),
-            'is_active' => false
+            'is_active' => false,
         ]);
     }
 
@@ -109,7 +109,7 @@ class GenreRepositoryTest extends TestCase
     public function testFindAllWithFilter()
     {
         Model::factory()->count(10)->create([
-            'name' => 'Test'
+            'name' => 'Test',
         ]);
         Model::factory()->count(10)->create();
 
@@ -127,17 +127,17 @@ class GenreRepositoryTest extends TestCase
         Model::factory()->count(60)->create();
 
         $response = $this->repository->paginate();
-        
+
         $this->assertEquals(15, count($response->items()));
-        $this->assertEquals(60, $response->total()); 
+        $this->assertEquals(60, $response->total());
     }
 
     public function testPaginationEmpty()
     {
         $response = $this->repository->paginate();
-        
+
         $this->assertCount(0, $response->items());
-        $this->assertEquals(0, $response->total()); 
+        $this->assertEquals(0, $response->total());
     }
 
     public function testUpdate()
@@ -159,7 +159,7 @@ class GenreRepositoryTest extends TestCase
 
         $this->assertEquals('Name updated', $response->name);
         $this->assertDatabaseHas('genres', [
-            'name' => 'Name updated'
+            'name' => 'Name updated',
         ]);
     }
 

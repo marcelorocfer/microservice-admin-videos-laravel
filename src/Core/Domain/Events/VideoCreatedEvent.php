@@ -8,7 +8,8 @@ class VideoCreatedEvent implements EventInterface
 {
     public function __construct(
         protected Video $video
-    ) {}
+    ) {
+    }
 
     public function getEventName(): string
     {
@@ -19,8 +20,7 @@ class VideoCreatedEvent implements EventInterface
     {
         return [
             'resource_id' => $this->video->id(),
-            'file_path'   => $this->video->videoFile()->filePath,
+            'file_path' => $this->video->videoFile()->filePath,
         ];
     }
-
 }

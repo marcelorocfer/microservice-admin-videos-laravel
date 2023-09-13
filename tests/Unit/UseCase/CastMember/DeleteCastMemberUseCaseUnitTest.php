@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\CastMember\DeleteCastMemberUseCase;
+use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
+use Core\UseCase\DTO\CastMember\Delete\DeleteCastMemberOutputDTO;
 use Mockery;
-use stdClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
-use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
-use Core\UseCase\CastMember\DeleteCastMemberUseCase;
-use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Delete\DeleteCastMemberOutputDTO;
+use stdClass;
 
 class DeleteCastMemberUseCaseUnitTest extends TestCase
 {
@@ -19,8 +19,8 @@ class DeleteCastMemberUseCaseUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepository->shouldReceive('delete')
-                            ->once()
-                            ->andReturn(true);
+            ->once()
+            ->andReturn(true);
 
         $mockInputDTO = Mockery::mock(CastMemberInputDTO::class, [$uuid]);
 

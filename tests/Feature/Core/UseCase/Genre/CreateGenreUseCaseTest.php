@@ -2,14 +2,15 @@
 
 namespace Tests\Feature\Core\UseCase\Genre;
 
-use Tests\TestCase;
-use App\Models\Genre as GenreModel;
 use App\Models\Category as CategoryModel;
-use Core\UseCase\Genre\CreateGenreUseCase;
-use Core\Domain\Exceptions\NotFoundException;
+use App\Models\Genre as GenreModel;
+use App\Repositories\Eloquent\CategoryRepository;
+use App\Repositories\Eloquent\GenreRepository;
 use App\Repositories\Transactions\DBTransaction;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\UseCase\DTO\Genre\Create\GenreCreateInputDTO;
-use App\Repositories\Eloquent\{CategoryRepository, GenreRepository};
+use Core\UseCase\Genre\CreateGenreUseCase;
+use Tests\TestCase;
 
 class CreateGenreUseCaseTest extends TestCase
 {
@@ -35,13 +36,13 @@ class CreateGenreUseCaseTest extends TestCase
         );
 
         $this->assertDatabaseHas('genres', [
-            'name' => 'test'
-        ]); 
+            'name' => 'test',
+        ]);
 
         $this->assertDatabaseCount('category_genre', 10);
     }
 
-    public function testExceptionInsertGenreWithCategoriesIdsInvalid() 
+    public function testExceptionInsertGenreWithCategoriesIdsInvalid()
     {
         $this->expectException(NotFoundException::class);
 
@@ -90,9 +91,9 @@ class CreateGenreUseCaseTest extends TestCase
             );
 
             $this->assertDatabaseHas('genres', [
-                'name' => 'test'
-            ]); 
-    
+                'name' => 'test',
+            ]);
+
             $this->assertDatabaseCount('category_genre', 10);
         } catch (\Throwable $th) {
             //throw $th;

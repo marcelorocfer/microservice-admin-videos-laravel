@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
             $payload = json_decode(Auth::token());
             $realmAccess = $payload->realm_access ?? null;
             $roles = $realmAccess->roles ?? [];
+
             return in_array('admin-catalog', $roles);
         });
     }

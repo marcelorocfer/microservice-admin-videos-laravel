@@ -9,7 +9,7 @@ class DomainValidation
     public static function notNull(string $value, string $message = null)
     {
         if (empty($value)) {
-            throw new EntityValidationException($message ?? "Should not be empty or null!");
+            throw new EntityValidationException($message ?? 'Should not be empty or null!');
         }
     }
 
@@ -29,7 +29,7 @@ class DomainValidation
 
     public static function strCanNullAndMaxLength(string $value = '', int $length = 255, string $message = null)
     {
-        if (!empty($value) && strlen($value) > $length) {
+        if (! empty($value) && strlen($value) > $length) {
             throw new EntityValidationException($message ?? "The value must not be greater than {$length} characters!");
         }
     }

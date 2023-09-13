@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use Core\Domain\Enum\Rating;
-use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreVideoRequest extends FormRequest
 {

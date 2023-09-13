@@ -2,10 +2,10 @@
 
 namespace Core\Domain\Builder\Video;
 
-use Core\Domain\Enum\MediaStatus;
-use Core\Domain\ValueObject\Media;
-use Core\Domain\ValueObject\Image;
 use Core\Domain\Entity\Video as Entity;
+use Core\Domain\Enum\MediaStatus;
+use Core\Domain\ValueObject\Image;
+use Core\Domain\ValueObject\Media;
 
 class BuilderVideo implements Builder
 {
@@ -106,5 +106,4 @@ class BuilderVideo implements Builder
     {
         return $this->entity;
     }
-
 }

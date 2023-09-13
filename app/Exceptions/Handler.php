@@ -2,12 +2,12 @@
 
 namespace App\Exceptions;
 
-use Throwable;
-use Illuminate\Http\Response;
+use Core\Domain\Exceptions\EntityValidationException;
 use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Notification\NotificationException;
-use Core\Domain\Exceptions\EntityValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
     private function showError(string $message, int $statusCode)
     {
         return response()->json([
-            'message' => $message
+            'message' => $message,
         ], $statusCode);
     }
 }

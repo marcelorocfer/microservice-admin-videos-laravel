@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
-use Tests\TestCase;
 use App\Models\CastMember as Model;
-use Core\Domain\Enum\CastMemberType;
-use Core\Domain\Entity\CastMember as Entity;
-use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\CastMemberRepository;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
+use Core\Domain\Entity\CastMember as Entity;
+use Core\Domain\Enum\CastMemberType;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
+use Tests\TestCase;
 
 class CastMemberRepositoryTest extends TestCase
 {
@@ -131,7 +131,7 @@ class CastMemberRepositoryTest extends TestCase
         $this->repository->delete($castMember->id);
 
         $this->assertSoftDeleted('cast_members', [
-            'id' => $castMember->id
+            'id' => $castMember->id,
         ]);
     }
 }

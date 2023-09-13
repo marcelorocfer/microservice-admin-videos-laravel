@@ -2,8 +2,8 @@
 
 namespace Core\UseCase\Category;
 
-use Core\UseCase\DTO\Category\CategoryInputDTO;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\UseCase\DTO\Category\CategoryInputDTO;
 use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteOutputDTO;
 
 class DeleteCategoryUseCase
@@ -13,7 +13,7 @@ class DeleteCategoryUseCase
     public function __construct(CategoryRepositoryInterface $repository)
     {
         $this->repository = $repository;
-    } 
+    }
 
     public function execute(CategoryInputDTO $input): CategoryDeleteOutputDto
     {

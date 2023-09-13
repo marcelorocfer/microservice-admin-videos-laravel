@@ -2,19 +2,22 @@
 
 namespace Tests\Unit\App\Models;
 
-use PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\TestCase;
 
 abstract class ModelTestCase extends TestCase
 {
     abstract protected function model(): Model;
+
     abstract protected function traits(): array;
+
     abstract protected function fillables(): array;
+
     abstract protected function casts(): array;
 
     public function testIfUseTraits()
     {
-        $traitsNeed = $this->traits();;
+        $traitsNeed = $this->traits();
 
         $traitsUsed = array_keys(class_uses($this->model()));
 
@@ -29,7 +32,7 @@ abstract class ModelTestCase extends TestCase
 
     public function testFillables()
     {
-        $expectedFillable = $this->fillables();;
+        $expectedFillable = $this->fillables();
 
         $fillable = $this->model()->getFillable();
 

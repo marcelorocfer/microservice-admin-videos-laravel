@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\UseCase\Genre;
 
-use Mockery;
-use stdClass;
-use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\TestCase;
-use Core\UseCase\DTO\Genre\GenreInputDTO;
-use Core\UseCase\Genre\DeleteGenreUseCase;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\UseCase\DTO\Genre\Delete\DeleteGenreOutputDTO;
+use Core\UseCase\DTO\Genre\GenreInputDTO;
+use Core\UseCase\Genre\DeleteGenreUseCase;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use stdClass;
 
 class DeleteGenreUseCaseUnitTest extends TestCase
 {
@@ -19,12 +19,12 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $mockRepository->shouldReceive('delete')
-                        ->once()
-                        ->with($uuid)
-                        ->andReturn(true);
+            ->once()
+            ->with($uuid)
+            ->andReturn(true);
 
         $mockInputDTO = Mockery::mock(GenreInputDTO::class, [$uuid]);
-        
+
         $useCase = new DeleteGenreUseCase($mockRepository);
         $response = $useCase->execute($mockInputDTO);
 
@@ -38,12 +38,12 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $mockRepository->shouldReceive('delete')
-                        ->times(1)
-                        ->with($uuid)
-                        ->andReturn(false);
+            ->times(1)
+            ->with($uuid)
+            ->andReturn(false);
 
         $mockInputDTO = Mockery::mock(GenreInputDTO::class, [$uuid]);
-        
+
         $useCase = new DeleteGenreUseCase($mockRepository);
         $response = $useCase->execute($mockInputDTO);
 

@@ -13,8 +13,7 @@ class ListCategoriesOutputDTO
         public int $per_page,
         public int $to,
         public int $from,
-    )
-    {
+    ) {
 
     }
 }

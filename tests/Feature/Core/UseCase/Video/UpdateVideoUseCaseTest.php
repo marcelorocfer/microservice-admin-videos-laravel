@@ -3,10 +3,10 @@
 namespace Tests\Feature\Core\UseCase\Video;
 
 use App\Models\Video;
-use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\UpdateVideoUseCase;
 
-class UpdateVideoUseCaseTest  extends BaseVideoUseCase
+class UpdateVideoUseCaseTest extends BaseVideoUseCase
 {
     public function useCase(): string
     {
@@ -17,11 +17,11 @@ class UpdateVideoUseCaseTest  extends BaseVideoUseCase
         array $categories = [],
         array $genres = [],
         array $castMembers = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $bannerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $bannerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
     ): object {
         $video = Video::factory()->create();
 

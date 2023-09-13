@@ -2,16 +2,16 @@
 
 namespace Core\UseCase\Video;
 
-use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Builder\Video\Builder;
+use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Events\VideoCreatedEvent;
 use Core\Domain\Exceptions\NotFoundException;
-use Core\UseCase\Interfaces\FileStorageInterface;
-use Core\UseCase\Interfaces\TransactionInterface;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 abstract class BaseVideoUseCase
@@ -60,7 +60,7 @@ abstract class BaseVideoUseCase
         }
     }
 
-    protected function storageFile(string $path, ?array $media = null): ?string
+    protected function storageFile(string $path, array $media = null): ?string
     {
         if ($media) {
             return $this->storage->store(
@@ -94,7 +94,7 @@ abstract class BaseVideoUseCase
         );
     }
 
-    protected function validateIds(array $ids, $repository, string $singularLabel, ?string $pluralLabel = null)
+    protected function validateIds(array $ids, $repository, string $singularLabel, string $pluralLabel = null)
     {
         $idsDB = $repository->getIdsListIds($ids);
 
@@ -103,7 +103,7 @@ abstract class BaseVideoUseCase
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',
-                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $singularLabel,
+                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel.'s' : $singularLabel,
                 implode(', ', $arrayDiff)
             );
 

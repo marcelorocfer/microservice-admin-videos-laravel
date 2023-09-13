@@ -2,8 +2,8 @@
 
 namespace Core\UseCase\CastMember;
 
-use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
 use Core\UseCase\DTO\CastMember\Delete\DeleteCastMemberOutputDTO;
 
 class DeleteCastMemberUseCase

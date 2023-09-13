@@ -2,9 +2,9 @@
 
 namespace Core\UseCase\Genre;
 
-use Core\UseCase\DTO\Genre\GenreInputDTO;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\UseCase\DTO\Genre\Delete\DeleteGenreOutputDTO;
+use Core\UseCase\DTO\Genre\GenreInputDTO;
 
 class DeleteGenreUseCase
 {

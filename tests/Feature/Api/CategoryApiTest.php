@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Tests\TestCase;
 use Tests\Traits\WithoutMiddlewareTrait;
 
 class CategoryApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
-    
+
     protected $endpoint = '/api/categories';
 
     public function test_list_empty_categories()
@@ -36,8 +36,8 @@ class CategoryApiTest extends TestCase
                 'first_page',
                 'per_page',
                 'to',
-                'from'
-            ]
+                'from',
+            ],
         ]);
         $response->assertJsonCount(15, 'data');
     }
@@ -71,8 +71,8 @@ class CategoryApiTest extends TestCase
                 'name',
                 'description',
                 'is_active',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
         $this->assertEquals($category->id, $response['data']['id']);
     }
@@ -85,15 +85,15 @@ class CategoryApiTest extends TestCase
         $response->assertJsonStructure([
             'message',
             'errors' => [
-                'name'
-            ]
+                'name',
+            ],
         ]);
     }
 
     public function test_store()
     {
         $data = [
-            'name' => 'New Category'
+            'name' => 'New Category',
         ];
 
         $response = $this->postJson($this->endpoint, $data);
@@ -104,8 +104,8 @@ class CategoryApiTest extends TestCase
                 'name',
                 'description',
                 'is_active',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
         $response = $this->postJson($this->endpoint, [
             'name' => 'New Category',
@@ -143,8 +143,8 @@ class CategoryApiTest extends TestCase
         $response->assertJsonStructure([
             'message',
             'errors' => [
-                'name'
-            ]
+                'name',
+            ],
         ]);
     }
 
@@ -165,8 +165,8 @@ class CategoryApiTest extends TestCase
                 'name',
                 'description',
                 'is_active',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
         $this->assertDatabaseHas('categories', [
             'name' => 'Name updated',
@@ -179,7 +179,7 @@ class CategoryApiTest extends TestCase
         $response = $this->deleteJson("{$this->endpoint}/{$category->id}");
         $response->assertStatus(Response::HTTP_NO_CONTENT);
         $this->assertSoftDeleted('categories', [
-            'id' => $category->id
+            'id' => $category->id,
         ]);
     }
 }

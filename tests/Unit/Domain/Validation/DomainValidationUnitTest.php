@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domain\Validation;
 
-use Throwable;
-use PHPUnit\Framework\TestCase;
-use Core\Domain\Validation\DomainValidation;
 use Core\Domain\Exceptions\EntityValidationException;
+use Core\Domain\Validation\DomainValidation;
+use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class DomainValidationUnitTest extends TestCase
 {

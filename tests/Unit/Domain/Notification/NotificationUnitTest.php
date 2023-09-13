@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domain\Notification;
 
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Notification\Notification;
+use PHPUnit\Framework\TestCase;
 
 class NotificationUnitTest extends TestCase
 {

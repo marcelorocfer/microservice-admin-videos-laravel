@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\UseCase;
 
-use Mockery;
 use Core\Domain\Repository\PaginationInterface;
+use Mockery;
 
 trait UseCaseTrait
 {

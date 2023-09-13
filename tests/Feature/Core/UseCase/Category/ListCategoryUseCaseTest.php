@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Category;
 
-use Tests\TestCase;
 use App\Models\Category as Model;
+use App\Repositories\Eloquent\CategoryRepository;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\DTO\Category\CategoryInputDTO;
-use App\Repositories\Eloquent\CategoryRepository;
+use Tests\TestCase;
 
 class ListCategoryUseCaseTest extends TestCase
 {

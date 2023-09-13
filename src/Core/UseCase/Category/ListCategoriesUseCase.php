@@ -6,11 +6,11 @@ use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDTO;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesOutputDTO;
 
-class ListCategoriesUseCase 
+class ListCategoriesUseCase
 {
     protected $repository;
 
-    public function __construct(CategoryRepositoryInterface $repository) 
+    public function __construct(CategoryRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -52,6 +52,6 @@ class ListCategoriesUseCase
             per_page: $categories->perPage(),
             to: $categories->to(),
             from: $categories->from(),
-        ); */        
+        ); */
     }
 }

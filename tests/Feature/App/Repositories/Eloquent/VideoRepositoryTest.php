@@ -2,22 +2,22 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
-use DateTime;
-use Tests\TestCase;
-use App\Models\Genre;
-use App\Models\Category;
 use App\Enums\ImageTypes;
 use App\Models\CastMember;
-use Core\Domain\Enum\Rating;
+use App\Models\Category;
+use App\Models\Genre;
 use App\Models\Video as Model;
-use Core\Domain\Enum\MediaStatus;
-use Core\Domain\ValueObject\Uuid;
-use Core\Domain\Entity\Video as EntityVideo;
-use Core\Domain\Exceptions\NotFoundException;
 use App\Repositories\Eloquent\VideoRepository;
+use Core\Domain\Entity\Video as EntityVideo;
+use Core\Domain\Enum\MediaStatus;
+use Core\Domain\Enum\Rating;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Image as ValueObjectImage;
 use Core\Domain\ValueObject\Media as ValueObjectMedia;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
+use Tests\TestCase;
 
 class VideoRepositoryTest extends TestCase
 {
@@ -51,7 +51,7 @@ class VideoRepositoryTest extends TestCase
         $this->repository->insert($entity);
 
         $this->assertDatabaseHas('videos', [
-            'id' => $entity->id()
+            'id' => $entity->id(),
         ]);
     }
 
@@ -85,7 +85,7 @@ class VideoRepositoryTest extends TestCase
         $entityInDB = $this->repository->insert($entity);
 
         $this->assertDatabaseHas('videos', [
-            'id' => $entity->id()
+            'id' => $entity->id(),
         ]);
 
         $this->assertDatabaseCount('genre_video', 4);
@@ -205,7 +205,7 @@ class VideoRepositoryTest extends TestCase
         $videoDB = Model::factory()->create();
 
         $this->assertDatabaseHas('videos', [
-            'title' => $videoDB->title
+            'title' => $videoDB->title,
         ]);
 
         $entity = new EntityVideo(
@@ -234,7 +234,7 @@ class VideoRepositoryTest extends TestCase
         $entityInDB = $this->repository->update($entity);
 
         $this->assertDatabaseHas('videos', [
-            'title' => 'Test'
+            'title' => 'Test',
         ]);
 
         $this->assertDatabaseCount('genre_video', 10);
@@ -257,13 +257,13 @@ class VideoRepositoryTest extends TestCase
         $video = Model::factory()->create();
 
         $this->assertDatabaseHas('videos', [
-            'id' => $video->id
+            'id' => $video->id,
         ]);
 
         $this->repository->delete($video->id);
 
         $this->assertSoftDeleted('videos', [
-            'id' => $video->id
+            'id' => $video->id,
         ]);
     }
 

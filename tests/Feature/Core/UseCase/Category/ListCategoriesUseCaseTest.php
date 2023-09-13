@@ -2,13 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Category;
 
-use Tests\TestCase;
 use App\Models\Category as Model;
-use Illuminate\Foundation\Testing\WithFaker;
-use Core\UseCase\Category\ListCategoriesUseCase;
 use App\Repositories\Eloquent\CategoryRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDTO;
+use Tests\TestCase;
 
 class ListCategoriesUseCaseTest extends TestCase
 {
@@ -30,6 +28,7 @@ class ListCategoriesUseCaseTest extends TestCase
     {
         $repository = new CategoryRepository(new Model());
         $useCase = new ListCategoriesUseCase($repository);
+
         return $useCase->execute(new ListCategoriesInputDTO());
     }
 }

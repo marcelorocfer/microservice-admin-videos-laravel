@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Genre;
 
-use Tests\TestCase;
 use App\Models\Genre as Model;
-use Core\UseCase\Genre\ListGenreUseCase;
-use Core\UseCase\DTO\Genre\GenreInputDTO;
 use App\Repositories\Eloquent\GenreRepository;
+use Core\UseCase\DTO\Genre\GenreInputDTO;
+use Core\UseCase\Genre\ListGenreUseCase;
+use Tests\TestCase;
 
 class ListGenreUseCaseTest extends TestCase
 {

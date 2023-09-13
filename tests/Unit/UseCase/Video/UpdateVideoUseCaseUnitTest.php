@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Mockery;
 use Core\Domain\ValueObject\Uuid;
-use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
+use Core\UseCase\Video\Update\UpdateVideoUseCase;
+use Mockery;
 
 class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
 {
@@ -35,13 +35,12 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
         array $categoriesIds = [],
         array $genresIds = [],
         array $castMembersIds = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
-        ?array $bannerFile = null,
-    )
-    {
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
+        array $bannerFile = null,
+    ) {
         return Mockery::mock(UpdateInputVideoDTO::class, [
             Uuid::random(),
             'title',

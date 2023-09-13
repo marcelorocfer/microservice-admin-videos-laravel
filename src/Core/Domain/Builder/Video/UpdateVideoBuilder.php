@@ -2,9 +2,9 @@
 
 namespace Core\Domain\Builder\Video;
 
-use DateTime;
-use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\Video as Entity;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 
 class UpdateVideoBuilder extends BuilderVideo
 {

@@ -3,26 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
+use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\Category\DeleteCategoryUseCase;
+use Core\UseCase\Category\ListCategoriesUseCase;
+use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Core\UseCase\DTO\Category\CategoryInputDTO;
-use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDTO;
 use Core\UseCase\DTO\Category\CreateCategory\CategoryCreateInputDTO;
+use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDTO;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDTO;
-use Illuminate\Http\{
-    Request,
-    Response
-};
-use App\Http\Requests\{
-    StoreCategoryRequest,
-    UpdateCategoryRequest
-};
-use Core\UseCase\Category\{
-    ListCategoryUseCase,
-    CreateCategoryUseCase,
-    DeleteCategoryUseCase,
-    ListCategoriesUseCase,
-    UpdateCategoryUseCase,
-};
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -38,17 +32,17 @@ class CategoryController extends Controller
         );
 
         return CategoryResource::collection(collect($response->items))
-                                ->additional([
-                                    'meta' => [
-                                        'total' => $response->total,
-                                        'current_page' => $response->current_page,
-                                        'last_page' => $response->last_page,
-                                        'first_page' => $response->first_page,
-                                        'per_page' => $response->per_page,
-                                        'to' => $response->to,
-                                        'from' => $response->from,
-                                    ]
-                                ]);
+            ->additional([
+                'meta' => [
+                    'total' => $response->total,
+                    'current_page' => $response->current_page,
+                    'last_page' => $response->last_page,
+                    'first_page' => $response->first_page,
+                    'per_page' => $response->per_page,
+                    'to' => $response->to,
+                    'from' => $response->from,
+                ],
+            ]);
     }
 
     public function store(StoreCategoryRequest $request, CreateCategoryUseCase $useCase)
@@ -62,8 +56,8 @@ class CategoryController extends Controller
         );
 
         return (new CategoryResource($response))
-                ->response()
-                ->setStatusCode(Response::HTTP_CREATED);
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(ListCategoryUseCase $useCase, $id)

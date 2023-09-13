@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class TesteUnitTest extends TestCase
 {
-    public function test_call_method_foo() 
+    public function test_call_method_foo()
     {
         $teste = new Teste();
         $response = $teste->foo();

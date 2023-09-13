@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Mockery;
 use Core\Domain\Enum\Rating;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
+use Mockery;
 
 class CreateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
 {
@@ -35,13 +35,12 @@ class CreateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
         array $categoriesIds = [],
         array $genresIds = [],
         array $castMembersIds = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
-        ?array $bannerFile = null,
-    )
-    {
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
+        array $bannerFile = null,
+    ) {
         return Mockery::mock(CreateInputVideoDTO::class, [
             'title',
             'description',

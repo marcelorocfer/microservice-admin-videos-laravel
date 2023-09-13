@@ -12,9 +12,7 @@ class Notification
     }
 
     /**
-     *
-     * @param array $error [context, message]
-     * @return void
+     * @param  array  $error [context, message]
      */
     public function addError(array $error): void
     {
@@ -31,8 +29,9 @@ class Notification
         $messages = '';
 
         foreach ($this->errors as $error) {
-            if ($context === '' || $error['context'] === $context)
+            if ($context === '' || $error['context'] === $context) {
                 $messages .= "{$error['context']}: {$error['message']}, ";
+            }
         }
 
         return $messages;

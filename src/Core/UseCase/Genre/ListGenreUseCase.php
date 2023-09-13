@@ -2,8 +2,9 @@
 
 namespace Core\UseCase\Genre;
 
-use Core\UseCase\DTO\Genre\{GenreInputDTO, GenreOutputDTO};
 use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\UseCase\DTO\Genre\GenreInputDTO;
+use Core\UseCase\DTO\Genre\GenreOutputDTO;
 
 class ListGenreUseCase
 {

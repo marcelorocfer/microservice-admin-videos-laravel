@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\UseCase\Category;
 
-use Mockery;
-use stdClass;
-use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Category;
-use Core\UseCase\Category\UpdateCategoryUseCase;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDTO;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateOutputDTO;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use stdClass;
 
-class UpdateCategoryUseCaseUnitTest extends TestCase 
+class UpdateCategoryUseCaseUnitTest extends TestCase
 {
     public function testRenameCategory()
     {
@@ -23,7 +23,7 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
         $this->mockEntity = Mockery::mock(Category::class, [
             $uuid,
             $categoryName,
-            $categoryDescription
+            $categoryDescription,
         ]);
 
         $this->mockEntity->shouldReceive('update');

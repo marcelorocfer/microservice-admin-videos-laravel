@@ -3,10 +3,8 @@
 namespace Core\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Update\{
-    CastMemberUpdateInputDTO,
-    CastMemberUpdateOutputDTO
-};
+use Core\UseCase\DTO\CastMember\Update\CastMemberUpdateInputDTO;
+use Core\UseCase\DTO\CastMember\Update\CastMemberUpdateOutputDTO;
 
 class UpdateCastMemberUseCase
 {

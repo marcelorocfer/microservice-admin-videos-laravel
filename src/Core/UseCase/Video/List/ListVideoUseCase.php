@@ -10,7 +10,8 @@ class ListVideoUseCase
 {
     public function __construct(
         private VideoRepositoryInterface $repository
-    ) {}
+    ) {
+    }
 
     public function exec(ListInputVideoUseCase $input): ListOutputVideoUseCase
     {

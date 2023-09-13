@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
-use Throwable;
-use Tests\TestCase;
-use App\Models\Category as Model;
 use App\Models\Category;
-use Core\Domain\Exceptions\NotFoundException;
+use App\Models\Category as Model;
 use App\Repositories\Eloquent\CategoryRepository;
 use Core\Domain\Entity\Category as EntityCategory;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
+use Tests\TestCase;
+use Throwable;
 
 class CategoryRepositoryTest extends TestCase
 {
@@ -20,10 +20,10 @@ class CategoryRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->repository = new CategoryRepository(new Model());
-    }  
+    }
 
     public function testInsert()
-    {   
+    {
         $entity = new EntityCategory(
             name: 'Teste'
         );
@@ -33,7 +33,7 @@ class CategoryRepositoryTest extends TestCase
         $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
         $this->assertInstanceOf(EntityCategory::class, $response);
         $this->assertDatabaseHas('categories', [
-            'name' => $entity->name
+            'name' => $entity->name,
         ]);
     }
 

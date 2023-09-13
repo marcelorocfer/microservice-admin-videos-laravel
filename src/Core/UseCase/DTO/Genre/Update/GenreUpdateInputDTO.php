@@ -8,5 +8,6 @@ class GenreUpdateInputDTO
         public string $id,
         public string $name,
         public array $categoriesId = [],
-    ) {}
+    ) {
+    }
 }

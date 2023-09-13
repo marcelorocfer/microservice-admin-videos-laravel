@@ -2,12 +2,12 @@
 
 namespace Core\UseCase\Video\Update;
 
-use Throwable;
 use Core\Domain\Builder\Video\Builder;
-use Core\UseCase\Video\BaseVideoUseCase;
 use Core\Domain\Builder\Video\UpdateVideoBuilder;
+use Core\UseCase\Video\BaseVideoUseCase;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
+use Throwable;
 
 class UpdateVideoUseCase extends BaseVideoUseCase
 {

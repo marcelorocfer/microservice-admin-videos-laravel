@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\UseCase\Category;
 
-use Mockery;
-use stdClass;
-use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Category;
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\DTO\Category\CategoryInputDTO;
 use Core\UseCase\DTO\Category\CategoryOutputDTO;
-use Core\Domain\Repository\CategoryRepositoryInterface;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use stdClass;
 
 class ListCategoryUseCaseUnitTest extends TestCase
 {
@@ -20,16 +20,16 @@ class ListCategoryUseCaseUnitTest extends TestCase
 
         $this->mockEntity = Mockery::mock(Category::class, [
             $id,
-            'Test Category'
+            'Test Category',
         ]);
 
         $this->mockEntity->shouldReceive('id')->andReturn($id);
         $this->mockEntity->shouldReceive('created_at')->andReturn(date('Y-m-d H:i:s'));
-        
+
         $this->mockRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $this->mockRepository->shouldReceive('findById')
-                            ->with($id)
-                            ->andReturn($this->mockEntity);
+            ->with($id)
+            ->andReturn($this->mockEntity);
 
         $this->mockInputDTO = Mockery::mock(CategoryInputDTO::class, [
             $id,
@@ -45,11 +45,10 @@ class ListCategoryUseCaseUnitTest extends TestCase
         /**
          * Spies
          */
-
         $this->spy = Mockery::spy(stdClass::class, CategoryRepositoryInterface::class);
         $this->spy->shouldReceive('findById')
-                            ->with($id)
-                            ->andReturn($this->mockEntity);
+            ->with($id)
+            ->andReturn($this->mockEntity);
 
         $useCase = new ListCategoryUseCase($this->spy);
         $response = $useCase->execute($this->mockInputDTO);

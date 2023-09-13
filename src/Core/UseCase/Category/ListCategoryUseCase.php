@@ -2,9 +2,9 @@
 
 namespace Core\UseCase\Category;
 
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\DTO\Category\CategoryInputDTO;
 use Core\UseCase\DTO\Category\CategoryOutputDTO;
-use Core\Domain\Repository\CategoryRepositoryInterface;
 
 class ListCategoryUseCase
 {

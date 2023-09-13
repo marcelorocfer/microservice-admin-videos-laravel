@@ -2,11 +2,11 @@
 
 namespace Core\Domain\Entity;
 
-use DateTime;
-use Core\Domain\ValueObject\Uuid;
+use Core\Domain\Entity\Traits\MagicalMethodsTrait;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Validation\DomainValidation;
-use Core\Domain\Entity\Traits\MagicalMethodsTrait;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 
 class CastMember
 {
@@ -18,7 +18,7 @@ class CastMember
         protected ?Uuid $id = null,
         protected ?DateTime $created_at = null,
 
-    ){
+    ) {
         $this->id = $this->id ?? Uuid::random();
         $this->created_at = $this->created_at ?? new DateTime();
 

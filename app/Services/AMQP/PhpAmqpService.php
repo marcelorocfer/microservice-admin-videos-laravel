@@ -3,13 +3,14 @@
 namespace App\Services\AMQP;
 
 use Closure;
-use PhpAmqpLib\Message\AMQPMessage;
-use PhpAmqpLib\Exchange\AMQPExchangeType;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Exchange\AMQPExchangeType;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class PhpAmqpService implements AMQPInterface
 {
     protected $connection = null;
+
     protected $channel = null;
 
     public function producer(string $queue, array $payload, string $exchange): void
@@ -40,7 +41,7 @@ class PhpAmqpService implements AMQPInterface
         );
 
         $message = new AMQPMessage(json_encode($payload), [
-            'content_type' => 'text/plain'
+            'content_type' => 'text/plain',
         ]);
 
         $this->channel->basic_publish($message, $exchange);

@@ -3,26 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCastMemberRequest;
+use App\Http\Requests\UpdateCastMemberRequest;
 use App\Http\Resources\CastMemberResource;
+use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\UseCase\CastMember\DeleteCastMemberUseCase;
+use Core\UseCase\CastMember\ListCastMembersUseCase;
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\CastMember\UpdateCastMemberUseCase;
 use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
-use Core\UseCase\DTO\CastMember\List\ListCastMembersInputDTO;
 use Core\UseCase\DTO\CastMember\Create\CastMemberCreateInputDTO;
+use Core\UseCase\DTO\CastMember\List\ListCastMembersInputDTO;
 use Core\UseCase\DTO\CastMember\Update\CastMemberUpdateInputDTO;
-use Illuminate\Http\{
-    Request,
-    Response
-};
-use App\Http\Requests\{
-    StoreCastMemberRequest,
-    UpdateCastMemberRequest
-};
-use Core\UseCase\CastMember\{
-    ListCastMemberUseCase,
-    CreateCastMemberUseCase,
-    DeleteCastMemberUseCase,
-    ListCastMembersUseCase,
-    UpdateCastMemberUseCase,
-};
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CastMemberController extends Controller
 {
@@ -38,17 +32,17 @@ class CastMemberController extends Controller
         );
 
         return CastMemberResource::collection(collect($response->items))
-                                ->additional([
-                                    'meta' => [
-                                        'total' => $response->total,
-                                        'current_page' => $response->current_page,
-                                        'last_page' => $response->last_page,
-                                        'first_page' => $response->first_page,
-                                        'per_page' => $response->per_page,
-                                        'to' => $response->to,
-                                        'from' => $response->from,
-                                    ]
-                                ]);
+            ->additional([
+                'meta' => [
+                    'total' => $response->total,
+                    'current_page' => $response->current_page,
+                    'last_page' => $response->last_page,
+                    'first_page' => $response->first_page,
+                    'per_page' => $response->per_page,
+                    'to' => $response->to,
+                    'from' => $response->from,
+                ],
+            ]);
     }
 
     public function store(StoreCastMemberRequest $request, CreateCastMemberUseCase $useCase)
@@ -61,8 +55,8 @@ class CastMemberController extends Controller
         );
 
         return (new CastMemberResource($response))
-                ->response()
-                ->setStatusCode(Response::HTTP_CREATED);
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(ListCastMemberUseCase $useCase, $id)

@@ -2,12 +2,12 @@
 
 namespace Core\UseCase\Video\Create;
 
-use Throwable;
 use Core\Domain\Builder\Video\Builder;
-use Core\UseCase\Video\BaseVideoUseCase;
 use Core\Domain\Builder\Video\BuilderVideo;
+use Core\UseCase\Video\BaseVideoUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\Create\DTO\CreateOutputVideoDTO;
+use Throwable;
 
 class CreateVideoUseCase extends BaseVideoUseCase
 {

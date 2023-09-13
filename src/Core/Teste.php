@@ -4,7 +4,7 @@ namespace Core;
 
 class Teste
 {
-    public function foo() 
+    public function foo()
     {
         return '123';
     }

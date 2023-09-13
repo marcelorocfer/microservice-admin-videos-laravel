@@ -3,22 +3,22 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Genre;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GenreUnitTest extends ModelTestCase
 {
     protected function model(): Model
     {
         return new Genre();
-    }    
+    }
 
     protected function traits(): array
     {
         return [
             HasFactory::class,
-            SoftDeletes::class
+            SoftDeletes::class,
         ];
     }
 

@@ -2,18 +2,15 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
-use Mockery;
-use stdClass;
-use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\TestCase;
-use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Entity\CastMember as EntityCastMember;
-use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Create\{
-    CastMemberCreateInputDTO,
-    CastMemberCreateOutputDTO,
-};
+use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\UseCase\DTO\CastMember\Create\CastMemberCreateInputDTO;
+use Core\UseCase\DTO\CastMember\Create\CastMemberCreateOutputDTO;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class CreateCastMemberUseCaseUnitTest extends TestCase
 {
@@ -26,19 +23,19 @@ class CreateCastMemberUseCaseUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepository->shouldReceive('insert')
-                            ->once()
-                            ->andReturn($mockEntity);
+            ->once()
+            ->andReturn($mockEntity);
         $useCase = new CreateCastMemberUseCase($mockRepository);
 
         $mockDTO = Mockery::mock(CastMemberCreateInputDTO::class, [
-            'name', 1
+            'name', 1,
         ]);
 
         // action
         $response = $useCase->execute($mockDTO);
 
         // assert
-        $this->assertInstanceOf(CastMemberCreateOutputDTO::class, $response); 
+        $this->assertInstanceOf(CastMemberCreateOutputDTO::class, $response);
         $this->assertNotEmpty($response->id);
         $this->assertEquals('name', $response->name);
         $this->assertEquals(1, $response->type);

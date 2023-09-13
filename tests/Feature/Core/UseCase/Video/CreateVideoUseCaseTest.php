@@ -6,7 +6,7 @@ use Core\Domain\Enum\Rating;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 
-class CreateVideoUseCaseTest  extends BaseVideoUseCase
+class CreateVideoUseCaseTest extends BaseVideoUseCase
 {
     public function useCase(): string
     {
@@ -17,11 +17,11 @@ class CreateVideoUseCaseTest  extends BaseVideoUseCase
         array $categories = [],
         array $genres = [],
         array $castMembers = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $bannerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $bannerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
     ): object {
         return new CreateInputVideoDTO(
             title: 'test',

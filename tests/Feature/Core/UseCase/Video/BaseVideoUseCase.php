@@ -2,35 +2,36 @@
 
 namespace Tests\Feature\Core\UseCase\Video;
 
-use Exception;
-use Throwable;
-use Tests\TestCase;
-use App\Models\Genre;
-use App\Models\Category;
 use App\Models\CastMember;
-use Tests\Stubs\VideoEventStub;
-use Tests\Stubs\UploadFilesStub;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Event;
-use Core\UseCase\Interfaces\TransactionInterface;
+use App\Models\Category;
+use App\Models\Genre;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
+use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
-use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
+use Tests\Stubs\UploadFilesStub;
+use Tests\Stubs\VideoEventStub;
+use Tests\TestCase;
+use Throwable;
 
 abstract class BaseVideoUseCase extends TestCase
 {
-    abstract function useCase(): string;
-    abstract function inputDTO(
+    abstract public function useCase(): string;
+
+    abstract public function inputDTO(
         array $categories = [],
         array $genres = [],
         array $castMembers = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $bannerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $bannerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
     ): object;
 
     /**

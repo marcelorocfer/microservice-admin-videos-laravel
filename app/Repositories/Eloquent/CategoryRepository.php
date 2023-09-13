@@ -2,13 +2,13 @@
 
 namespace App\Repositories\Eloquent;
 
-use Core\Domain\Entity\Entity;
-use Core\Domain\Entity\Category;
 use App\Models\Category as Model;
-use Core\Domain\Exceptions\NotFoundException;
-use Core\Domain\Repository\PaginationInterface;
 use App\Repositories\Presenters\PaginationPresenter;
+use Core\Domain\Entity\Category;
+use Core\Domain\Entity\Entity;
+use Core\Domain\Exceptions\NotFoundException;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\PaginationInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -34,7 +34,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function findById(string $id): Category
     {
-        if (!$category = $this->model->find($id)) {
+        if (! $category = $this->model->find($id)) {
             throw new NotFoundException('Category Not Found');
         }
 
@@ -44,20 +44,22 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function getIdsListIds(array $categoriesId = []): array
     {
         return $this->model
-                    ->whereIn('id', $categoriesId)
-                    ->pluck('id')
-                    ->toArray();
+            ->whereIn('id', $categoriesId)
+            ->pluck('id')
+            ->toArray();
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         $categories = $this->model
-                            ->where(function($query) use ($filter) {
-                                if ($filter)
-                                    $query->where('name', 'LIKE', "%{$filter}%");
-                            })
-                            ->orderBy('id', $order)
-                            ->get();
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('id', $order)
+            ->get();
+
         return $categories->toArray();
     }
 
@@ -75,7 +77,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function update(Entity $category): Entity
     {
-        if (!$categoryDB = $this->model->find($category->id())) {
+        if (! $categoryDB = $this->model->find($category->id())) {
             throw new NotFoundException('Category Not Found');
         }
 
@@ -92,7 +94,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function delete(string $id): bool
     {
-        if (!$categoryDB = $this->model->find($id)) {
+        if (! $categoryDB = $this->model->find($id)) {
             throw new NotFoundException('Category Not Found');
         }
 

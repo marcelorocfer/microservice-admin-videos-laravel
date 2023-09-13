@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
 use App\Models\CastMember;
 use Illuminate\Http\Response;
+use Tests\TestCase;
 use Tests\Traits\WithoutMiddlewareTrait;
 
 class CastMemberApiTest extends TestCase
@@ -37,7 +37,7 @@ class CastMemberApiTest extends TestCase
                 'per_page',
                 'to',
                 'from',
-            ]
+            ],
         ]);
     }
 
@@ -56,7 +56,7 @@ class CastMemberApiTest extends TestCase
     {
         CastMember::factory()->count(10)->create();
         CastMember::factory()->count(10)->create([
-            'name' => 'test'
+            'name' => 'test',
         ]);
         $response = $this->getJson("$this->endpoint?filter=test");
         $response->assertStatus(Response::HTTP_OK);
@@ -81,7 +81,7 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
     }
 
@@ -95,7 +95,7 @@ class CastMemberApiTest extends TestCase
             'errors' => [
                 'name',
                 'type',
-            ]
+            ],
         ]);
     }
 
@@ -113,10 +113,10 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertDatabaseHas('cast_members', [
-            'name' => 'test'
+            'name' => 'test',
         ]);
     }
 
@@ -139,7 +139,7 @@ class CastMemberApiTest extends TestCase
             'message',
             'errors' => [
                 'name',
-            ]
+            ],
         ]);
     }
 
@@ -148,7 +148,7 @@ class CastMemberApiTest extends TestCase
         $castMember = CastMember::factory()->create();
 
         $response = $this->putJson("$this->endpoint/{$castMember->id}", [
-            'name' => 'New name'
+            'name' => 'New name',
         ]);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
@@ -157,10 +157,10 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
         $this->assertDatabaseHas('cast_members', [
-            'name' => 'New name'
+            'name' => 'New name',
         ]);
     }
 
@@ -180,7 +180,7 @@ class CastMemberApiTest extends TestCase
         $response = $this->deleteJson("$this->endpoint/{$castMember->id}");
         $response->assertStatus(Response::HTTP_NO_CONTENT);
         $this->assertSoftDeleted('cast_members', [
-            'id' => $castMember->id
+            'id' => $castMember->id,
         ]);
     }
 }

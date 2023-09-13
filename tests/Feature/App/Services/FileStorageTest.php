@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\App\Services;
 
-use Tests\TestCase;
-use Illuminate\Http\UploadedFile;
 use App\Services\Storage\FileStorage;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class FileStorageTest extends TestCase
 {
@@ -21,7 +21,7 @@ class FileStorageTest extends TestCase
         ];
 
         $filePath = (new FileStorage())
-                        ->store('videos', $file);
+            ->store('videos', $file);
 
         Storage::assertExists($filePath);
 

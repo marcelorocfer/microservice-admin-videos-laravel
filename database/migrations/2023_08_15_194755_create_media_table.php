@@ -2,9 +2,9 @@
 
 use App\Enums\MediaTypes;
 use Core\Domain\Enum\MediaStatus;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('encoded_path')->nullable();
             $table->enum('media_status', array_keys(MediaStatus::cases()))
-                    ->default(MediaStatus::COMPLETED->value);
+                ->default(MediaStatus::COMPLETED->value);
             $table->enum('type', array_keys(MediaTypes::cases()));
             $table->timestamps();
         });

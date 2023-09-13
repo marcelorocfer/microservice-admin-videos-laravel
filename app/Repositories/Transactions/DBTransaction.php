@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Transactions;
 
-use Illuminate\Support\Facades\DB;
 use Core\UseCase\Interfaces\TransactionInterface;
+use Illuminate\Support\Facades\DB;
 
 class DBTransaction implements TransactionInterface
 {

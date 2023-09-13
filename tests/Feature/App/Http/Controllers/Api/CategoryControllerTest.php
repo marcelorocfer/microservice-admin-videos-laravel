@@ -2,32 +2,27 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api;
 
-use Tests\TestCase;
-use App\Models\Category;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Category;
 use App\Repositories\Eloquent\CategoryRepository;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\Category\DeleteCategoryUseCase;
+use Core\UseCase\Category\ListCategoriesUseCase;
+use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\{
-    Request,
-    Response,
-    JsonResponse,
-};
-use App\Http\Requests\{
-    StoreCategoryRequest,
-    UpdateCategoryRequest,
-};
-use Core\UseCase\Category\{
-    ListCategoryUseCase,
-    ListCategoriesUseCase,
-    CreateCategoryUseCase,
-    DeleteCategoryUseCase,
-    UpdateCategoryUseCase,
-};
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
     protected $repository;
+
     protected $controller;
 
     protected function setUp(): void
@@ -39,7 +34,7 @@ class CategoryControllerTest extends TestCase
 
     public function test_index()
     {
-        $useCase = new ListCategoriesUseCase($this->repository);       
+        $useCase = new ListCategoriesUseCase($this->repository);
         $response = $this->controller->index(new Request(), $useCase);
 
         $this->assertInstanceOf(AnonymousResourceCollection::class, $response);
@@ -53,7 +48,7 @@ class CategoryControllerTest extends TestCase
         $request = new StoreCategoryRequest();
         $request->headers->set('content-type', 'application/json');
         $request->setJson(new ParameterBag([
-            'name' => 'Teste'
+            'name' => 'Teste',
         ]));
 
         $response = $this->controller->store($request, $useCase);
@@ -70,7 +65,7 @@ class CategoryControllerTest extends TestCase
             useCase: new ListCategoryUseCase($this->repository),
             id: $category->id,
         );
-        
+
         $this->assertEquals(Response::HTTP_OK, $response->status());
     }
 
@@ -81,7 +76,7 @@ class CategoryControllerTest extends TestCase
         $request = new UpdateCategoryRequest();
         $request->headers->set('content-type', 'application/json');
         $request->setJson(new ParameterBag([
-            'name' => 'Updated'
+            'name' => 'Updated',
         ]));
 
         $response = $this->controller->update(
@@ -93,7 +88,7 @@ class CategoryControllerTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->status());
         $this->assertDatabaseHas('categories', [
-            'name' => 'Updated'
+            'name' => 'Updated',
         ]);
     }
 

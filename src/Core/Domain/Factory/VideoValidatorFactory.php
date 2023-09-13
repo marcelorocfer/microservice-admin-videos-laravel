@@ -3,8 +3,8 @@
 namespace Core\Domain\Factory;
 
 use Core\Domain\Validation\ValidatorInterface;
-use Core\Domain\Validation\VideoRakitValidator;
 use Core\Domain\Validation\VideoLaravelValidation;
+use Core\Domain\Validation\VideoRakitValidator;
 
 class VideoValidatorFactory
 {

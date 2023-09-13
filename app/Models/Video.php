@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Enums\ImageTypes;
 use App\Enums\MediaTypes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Video extends Model
 {
@@ -49,30 +49,30 @@ class Video extends Model
     public function media()
     {
         return $this->hasOne(Media::class)
-                    ->where('type', (string) MediaTypes::VIDEO->value);
+            ->where('type', (string) MediaTypes::VIDEO->value);
     }
 
     public function trailer()
     {
         return $this->hasOne(Media::class)
-                    ->where('type', (string) MediaTypes::TRAILER->value);
+            ->where('type', (string) MediaTypes::TRAILER->value);
     }
 
     public function banner()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::BANNER->value);
+            ->where('type', (string) ImageTypes::BANNER->value);
     }
 
     public function thumb()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::THUMB->value);
+            ->where('type', (string) ImageTypes::THUMB->value);
     }
 
     public function thumbHalf()
     {
         return $this->hasOne(ImageVideo::class)
-                    ->where('type', (string) ImageTypes::THUMB_HALF->value);
+            ->where('type', (string) ImageTypes::THUMB_HALF->value);
     }
 }

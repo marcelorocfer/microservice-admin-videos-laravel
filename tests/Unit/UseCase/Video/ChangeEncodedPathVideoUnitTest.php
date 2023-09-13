@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Mockery;
-use stdClass;
-use Core\Domain\Enum\Rating;
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Video as Entity;
+use Core\Domain\Enum\Rating;
 use Core\Domain\Exceptions\NotFoundException;
-use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\DTO\ChangeEncodedVideoOutputDTO;
 use Core\UseCase\Video\ChangeEncoded\ChangeEncodedPathVideo;
+use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
+use Core\UseCase\Video\DTO\ChangeEncodedVideoOutputDTO;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class ChangeEncodedPathVideoUnitTest extends TestCase
 {
@@ -24,11 +24,11 @@ class ChangeEncodedPathVideoUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepository->shouldReceive('findById')
-                        ->times(1)
-                        ->with($input->id)
-                        ->andReturn($this->getEntity());
+            ->times(1)
+            ->with($input->id)
+            ->andReturn($this->getEntity());
         $mockRepository->shouldReceive('updateMedia')
-                        ->times(1);
+            ->times(1);
 
         $useCase = new ChangeEncodedPathVideo(
             repository: $mockRepository
@@ -52,11 +52,11 @@ class ChangeEncodedPathVideoUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepository->shouldReceive('findById')
-                        ->times(1)
-                        ->with($input->id)
-                        ->andThrow(new NotFoundException('Not Found Video'));
+            ->times(1)
+            ->with($input->id)
+            ->andThrow(new NotFoundException('Not Found Video'));
         $mockRepository->shouldReceive('updateMedia')
-                        ->times(0);
+            ->times(0);
 
         $useCase = new ChangeEncodedPathVideo(
             repository: $mockRepository

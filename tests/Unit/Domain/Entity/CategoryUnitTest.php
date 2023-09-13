@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use Throwable;
-use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Category;
 use Core\Domain\Exceptions\EntityValidationException;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 
 class CategoryUnitTest extends TestCase
 {
-    public function testAttributes() 
+    public function testAttributes()
     {
         $category = new Category(
             name: 'New Category',
@@ -46,8 +46,8 @@ class CategoryUnitTest extends TestCase
         $this->assertTrue($category->is_active);
         $category->disable();
         $this->assertFalse($category->is_active);
-    }   
-    
+    }
+
     public function testUpdate()
     {
         $uuid = (string) Uuid::uuid4()->toString();

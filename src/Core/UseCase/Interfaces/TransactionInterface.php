@@ -2,8 +2,9 @@
 
 namespace Core\UseCase\Interfaces;
 
-interface TransactionInterface 
+interface TransactionInterface
 {
     public function commit();
+
     public function rollback();
 }

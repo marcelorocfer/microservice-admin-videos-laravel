@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGenre;
+use App\Http\Requests\UpdateGenre;
 use App\Http\Resources\GenreResource;
-use Core\UseCase\DTO\Genre\GenreInputDTO;
-use App\Http\Requests\{StoreGenre, UpdateGenre};
 use Core\UseCase\DTO\Genre\Create\GenreCreateInputDTO;
+use Core\UseCase\DTO\Genre\GenreInputDTO;
 use Core\UseCase\DTO\Genre\ListGenres\ListGenresInputDTO;
 use Core\UseCase\DTO\Genre\Update\GenreUpdateInputDTO;
-use Core\UseCase\Genre\{
-    ListGenresUseCase, 
-    CreateGenreUseCase,
-    DeleteGenreUseCase,
-    ListGenreUseCase, 
-    UpdateGenreUseCase,
-};
+use Core\UseCase\Genre\CreateGenreUseCase;
+use Core\UseCase\Genre\DeleteGenreUseCase;
+use Core\UseCase\Genre\ListGenresUseCase;
+use Core\UseCase\Genre\ListGenreUseCase;
+use Core\UseCase\Genre\UpdateGenreUseCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class GenreController extends Controller
 {
@@ -38,17 +37,17 @@ class GenreController extends Controller
         );
 
         return GenreResource::collection(collect($response->items))
-                                ->additional([
-                                    'meta' => [
-                                        'total' => $response->total,
-                                        'current_page' => $response->current_page,
-                                        'last_page' => $response->last_page,
-                                        'first_page' => $response->first_page,
-                                        'per_page' => $response->per_page,
-                                        'to' => $response->to,
-                                        'from' => $response->from,
-                                    ]
-                                ]);
+            ->additional([
+                'meta' => [
+                    'total' => $response->total,
+                    'current_page' => $response->current_page,
+                    'last_page' => $response->last_page,
+                    'first_page' => $response->first_page,
+                    'per_page' => $response->per_page,
+                    'to' => $response->to,
+                    'from' => $response->from,
+                ],
+            ]);
     }
 
     /**
@@ -68,8 +67,8 @@ class GenreController extends Controller
         );
 
         return (new GenreResource($response))
-                    ->response()
-                    ->setStatusCode(Response::HTTP_CREATED);
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -82,7 +81,7 @@ class GenreController extends Controller
     {
         $response = $useCase->execute(
             input: new GenreInputDTO(
-                id: $id                
+                id: $id
             )
         );
 
@@ -118,6 +117,7 @@ class GenreController extends Controller
     public function destroy(DeleteGenreUseCase $useCase, $id)
     {
         $useCase->execute(new GenreInputDTO($id));
+
         return response()->noContent();
     }
 }

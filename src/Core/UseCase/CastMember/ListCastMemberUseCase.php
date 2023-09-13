@@ -2,11 +2,9 @@
 
 namespace Core\UseCase\CastMember;
 
-use Core\UseCase\DTO\CastMember\{
-    CastMemberInputDTO,
-    CastMemberOutputDTO
-};
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
+use Core\UseCase\DTO\CastMember\CastMemberOutputDTO;
 
 class ListCastMemberUseCase
 {

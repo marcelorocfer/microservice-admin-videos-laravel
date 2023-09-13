@@ -2,35 +2,37 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Mockery;
-use stdClass;
-use Core\Domain\Enum\Rating;
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Video as Entity;
+use Core\Domain\Enum\Rating;
 use Core\Domain\Exceptions\NotFoundException;
-use Core\UseCase\Interfaces\TransactionInterface;
-use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
 abstract class BaseVideoUseCaseUnitTest extends TestCase
 {
     protected $useCase;
 
     abstract protected function nameActionRepository(): string;
+
     abstract protected function getUseCase(): string;
+
     abstract protected function createMockInputDTO(
         array $categoriesIds = [],
         array $genresIds = [],
         array $castMembersIds = [],
-        ?array $videoFile = null,
-        ?array $trailerFile = null,
-        ?array $thumbFile = null,
-        ?array $thumbHalf = null,
-        ?array $bannerFile = null,
+        array $videoFile = null,
+        array $trailerFile = null,
+        array $thumbFile = null,
+        array $thumbHalf = null,
+        array $bannerFile = null,
     );
 
     protected function createUseCase(
@@ -50,7 +52,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
                 timesCallUpdateMedia: $timesCallMethodUpdateMediaRepository,
             ),
             transaction: $this->createMockTransaction(
-                timesCallCommit:$timesCallMethodCommitTransaction,
+                timesCallCommit: $timesCallMethodCommitTransaction,
                 timesCallRollback: $timesCallMethodRollbackTransaction,
             ),
             storage: $this->createMockFileStorage(
@@ -183,12 +185,12 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
         $entity = $this->createEntity();
         $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mockRepository->shouldReceive($this->nameActionRepository())
-                        ->times($timesCallAction)
-                        ->andReturn($entity);
+            ->times($timesCallAction)
+            ->andReturn($entity);
         $mockRepository->shouldReceive('findById')
-                        ->andReturn($entity);
+            ->andReturn($entity);
         $mockRepository->shouldReceive('updateMedia')
-                        ->times($timesCallUpdateMedia);
+            ->times($timesCallUpdateMedia);
 
         return $mockRepository;
     }
@@ -197,6 +199,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
     {
         $mockRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $mockRepository->shouldReceive('getIdsListIds')->andReturn($categoriesResponse);
+
         return $mockRepository;
     }
 
@@ -204,6 +207,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
     {
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $mockRepository->shouldReceive('getIdsListIds')->andReturn($genresResponseIds);
+
         return $mockRepository;
     }
 
@@ -211,6 +215,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
     {
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepository->shouldReceive('getIdsListIds')->andReturn($castMembersResponseIds);
+
         return $mockRepository;
     }
 
@@ -221,6 +226,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
         $mockTransaction = Mockery::mock(stdClass::class, TransactionInterface::class);
         $mockTransaction->shouldReceive('commit')->times($timesCallCommit);
         $mockTransaction->shouldReceive('rollback')->times($timesCallRollback);
+
         return $mockTransaction;
     }
 
@@ -228,8 +234,9 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
     {
         $mockFileStorage = Mockery::mock(stdClass::class, FileStorageInterface::class);
         $mockFileStorage->shouldReceive('store')
-                        ->times($timesCall)
-                        ->andReturn('path/file.png');
+            ->times($timesCall)
+            ->andReturn('path/file.png');
+
         return $mockFileStorage;
     }
 
@@ -237,6 +244,7 @@ abstract class BaseVideoUseCaseUnitTest extends TestCase
     {
         $mockEventManager = Mockery::mock(stdClass::class, VideoEventManagerInterface::class);
         $mockEventManager->shouldReceive('dispatch')->times($times);
+
         return $mockEventManager;
     }
 

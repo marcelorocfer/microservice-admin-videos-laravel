@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\App\Http\Controllers\Api;
 
-use Mockery;
-use Illuminate\Http\Request;
-use PHPUnit\Framework\TestCase;
 use App\Http\Controllers\Api\CategoryController;
 use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesOutputDTO;
+use Illuminate\Http\Request;
+use Mockery;
+use PHPUnit\Framework\TestCase;
 
 class CategoryControllerUnitTest extends TestCase
 {
@@ -17,7 +17,7 @@ class CategoryControllerUnitTest extends TestCase
         $mockRequest->shouldReceive('get')->andReturn('teste');
 
         $mockOutputDTO = Mockery::mock(ListCategoriesOutputDTO::class, [
-            [], 1, 1, 1, 1, 1, 1, 1
+            [], 1, 1, 1, 1, 1, 1, 1,
         ]);
 
         $mockUseCase = Mockery::mock(ListCategoriesUseCase::class);

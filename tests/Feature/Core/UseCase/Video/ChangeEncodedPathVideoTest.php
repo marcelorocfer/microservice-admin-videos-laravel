@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Video;
 
-use Tests\TestCase;
 use App\Models\Video as Model;
-use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Video\ChangeEncoded\ChangeEncodedPathVideo;
+use Core\UseCase\Video\DTO\ChangeEncodedVideoDTO;
+use Tests\TestCase;
 
 class ChangeEncodedPathVideoTest extends TestCase
 {

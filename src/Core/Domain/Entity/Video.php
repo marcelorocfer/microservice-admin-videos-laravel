@@ -2,18 +2,20 @@
 
 namespace Core\Domain\Entity;
 
-use DateTime;
 use Core\Domain\Enum\Rating;
-use Core\Domain\ValueObject\Uuid;
-use Core\Domain\ValueObject\Image;
-use Core\Domain\ValueObject\Media;
 use Core\Domain\Factory\VideoValidatorFactory;
 use Core\Domain\Notification\NotificationException;
+use Core\Domain\ValueObject\Image;
+use Core\Domain\ValueObject\Media;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 
 class Video extends Entity
 {
     protected array $categorieIds = [];
+
     protected array $genreIds = [];
+
     protected array $castMemberIds = [];
 
     public function __construct(

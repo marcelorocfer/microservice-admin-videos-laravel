@@ -2,19 +2,17 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
-use Mockery;
-use stdClass;
-use PHPUnit\Framework\TestCase;
-use Core\Domain\ValueObject\Uuid;
-use Ramsey\Uuid\Uuid as RamseyUuid;
-use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Entity\CastMember as Entity;
-use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\{
-    CastMemberInputDTO,
-    CastMemberOutputDTO
-};
+use Core\Domain\ValueObject\Uuid;
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\DTO\CastMember\CastMemberInputDTO;
+use Core\UseCase\DTO\CastMember\CastMemberOutputDTO;
+use Mockery;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid as RamseyUuid;
+use stdClass;
 
 class ListCastMemberUseCaseUnitTest extends TestCase
 {
@@ -26,7 +24,7 @@ class ListCastMemberUseCaseUnitTest extends TestCase
         $mockEntity = Mockery::mock(Entity::class, [
             'name',
             CastMemberType::ACTOR,
-            new Uuid($uuid)
+            new Uuid($uuid),
         ]);
         $mockEntity->shouldReceive('id')->andReturn($uuid);
         $mockEntity->shouldReceive('created_at')->andReturn(date('Y-m-d H:i:s'));

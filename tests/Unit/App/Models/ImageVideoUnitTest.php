@@ -4,8 +4,8 @@ namespace Tests\Unit\App\Models;
 
 use App\Models\ImageVideo;
 use App\Models\Traits\UuidTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ImageVideoUnitTest extends ModelTestCase
 {

@@ -2,18 +2,16 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
+use Core\Domain\Entity\CastMember as Entity;
+use Core\Domain\Enum\CastMemberType;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
+use Core\UseCase\CastMember\UpdateCastMemberUseCase;
+use Core\UseCase\DTO\CastMember\Update\CastMemberUpdateInputDTO;
+use Core\UseCase\DTO\CastMember\Update\CastMemberUpdateOutputDTO;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid as RamseyUuid;
-use Core\Domain\Enum\CastMemberType;
-use Core\Domain\Entity\CastMember as Entity;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\CastMember\UpdateCastMemberUseCase;
-use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Update\{
-    CastMemberUpdateInputDTO,
-    CastMemberUpdateOutputDTO
-};
 
 class UpdateCastMemberUseCaseUnitTest extends TestCase
 {
@@ -25,7 +23,7 @@ class UpdateCastMemberUseCaseUnitTest extends TestCase
         $mockEntity = Mockery::mock(Entity::class, [
             'name',
             CastMemberType::ACTOR,
-            new ValueObjectUuid($uuid)
+            new ValueObjectUuid($uuid),
         ]);
 
         $mockEntity->shouldReceive('id')->andReturn($uuid);
@@ -34,15 +32,15 @@ class UpdateCastMemberUseCaseUnitTest extends TestCase
 
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mockRepository->shouldReceive('findById')
-                            ->times(1)
-                            ->with($uuid)
-                            ->andReturn($mockEntity);
+            ->times(1)
+            ->with($uuid)
+            ->andReturn($mockEntity);
         $mockRepository->shouldReceive('update')
-                            ->once()
-                            ->andReturn($mockEntity);
+            ->once()
+            ->andReturn($mockEntity);
 
         $mockInputDTO = Mockery::mock(CastMemberUpdateInputDTO::class, [
-            $uuid, 'New name'
+            $uuid, 'New name',
         ]);
 
         $useCase = new UpdateCastMemberUseCase($mockRepository);
