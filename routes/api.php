@@ -4,7 +4,14 @@ use App\Http\Controllers\Api\CastMemberController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\VideoController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+
+Route::get('test', function () {
+    Log::warning('test');
+
+    return 'ok!';
+});
 
 Route::middleware(['auth:api', 'can:admin-catalog'])->group(function () {
     Route::apiResource('/videos', VideoController::class);
